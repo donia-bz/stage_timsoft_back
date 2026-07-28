@@ -43,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
                         .dateCreation(LocalDateTime.now())
                         .entreprise(request.getEntreprise())
                         .adresseDefautId(request.getAdresseDefautId())
+                        .approuve(false)
                         .build();
                 break;
             case "LIVREUR":
@@ -58,6 +59,7 @@ public class AuthServiceImpl implements AuthService {
                         .latitudeActuelle(0.0)
                         .longitudeActuelle(0.0)
                         .noteMoyenne(5.0)
+                        .approuve(false)
                         .build();
                 break;
             case "ADMIN":
@@ -70,6 +72,7 @@ public class AuthServiceImpl implements AuthService {
                         .role("ADMIN")
                         .dateCreation(LocalDateTime.now())
                         .niveauAcces(request.getNiveauAcces() != null ? request.getNiveauAcces() : "MODERATEUR")
+                        .approuve(true)
                         .build();
                 break;
             default:
@@ -95,6 +98,10 @@ public class AuthServiceImpl implements AuthService {
 
         if (!utilisateur.getMotDePasse().equals(request.getMotDePasse())) {
             throw new IllegalArgumentException("Identifiants incorrects");
+        }
+
+        if (utilisateur.getApprouve() != null && !utilisateur.getApprouve()) {
+            throw new IllegalArgumentException("Votre compte est en attente d'approbation par l'administrateur.");
         }
 
         return AuthResponse.builder()
@@ -123,5 +130,15 @@ public class AuthServiceImpl implements AuthService {
         return utilisateurRepository.findAll().stream()
                 .filter(u -> u.getRole().equalsIgnoreCase(role))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Utilisateur approuverUtilisateur(String id) {
+        Utilisateur u = utilisateurRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'id : " + id));
+        u.setApprouve(true);
+        Utilisateur saved = utilisateurRepository.save(u);
+        System.out.println("Notification SMS/Mail envoyée à " + u.getTelephone() + " / " + u.getEmail() + " : Compte activé. Identifiants: " + u.getEmail() + " / " + u.getMotDePasse());
+        return saved;
     }
 }

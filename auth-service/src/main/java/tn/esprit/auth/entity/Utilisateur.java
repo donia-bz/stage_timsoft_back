@@ -29,4 +29,5 @@ public class Utilisateur {
     @CreatedDate
     private LocalDateTime dateCreation;
     private String role; // CLIENT, LIVREUR, ADMIN
+    private Boolean approuve;
 }

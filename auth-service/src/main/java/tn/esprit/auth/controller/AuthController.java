@@ -12,6 +12,7 @@ import tn.esprit.auth.entity.Utilisateur;
 import tn.esprit.auth.service.AuthService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,5 +46,15 @@ public class AuthController {
     @GetMapping("/users/role/{role}")
     public ResponseEntity<List<Utilisateur>> getUsersByRole(@PathVariable String role) {
         return ResponseEntity.ok(authService.getUsersByRole(role));
+    }
+
+    @PatchMapping("/users/{id}/approuver")
+    public ResponseEntity<Utilisateur> approuverUtilisateur(@PathVariable String id) {
+        return ResponseEntity.ok(authService.approuverUtilisateur(id));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", ex.getMessage()));
     }
 }
