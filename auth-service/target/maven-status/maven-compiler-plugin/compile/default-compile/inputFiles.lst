@@ -1,0 +1,12 @@
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\AuthServiceApplication.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\controller\AuthController.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\dto\AuthResponse.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\dto\LoginRequest.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\dto\RegisterRequest.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\entity\Admin.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\entity\Client.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\entity\Livreur.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\entity\Utilisateur.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\repository\UtilisateurRepository.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\service\AuthService.java
+F:\stage-timsoft-livraison\auth-service\src\main\java\tn\esprit\auth\service\impl\AuthServiceImpl.java

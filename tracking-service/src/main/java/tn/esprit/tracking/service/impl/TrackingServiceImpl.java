@@ -1,0 +1,89 @@
+package tn.esprit.tracking.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import tn.esprit.tracking.entity.Livraison;
+import tn.esprit.tracking.entity.PositionTracking;
+import tn.esprit.tracking.repository.LivraisonRepository;
+import tn.esprit.tracking.repository.PositionTrackingRepository;
+import tn.esprit.tracking.service.TrackingService;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class TrackingServiceImpl implements TrackingService {
+
+    private final LivraisonRepository livraisonRepository;
+    private final PositionTrackingRepository positionTrackingRepository;
+
+    @Override
+    public Livraison creerLivraison(String commandeId, String livreurId) {
+        Livraison livraison = Livraison.builder()
+                .commandeId(commandeId)
+                .livreurId(livreurId)
+                .statut("affectee")
+                .dateAffectation(LocalDateTime.now())
+                .distanceKm(0.0)
+                .build();
+        return livraisonRepository.save(livraison);
+    }
+
+    @Override
+    public Livraison demarrerLivraison(String id) {
+        Livraison livraison = getLivraisonById(id);
+        livraison.setStatut("en_cours");
+        livraison.setDateDebut(LocalDateTime.now());
+        return livraisonRepository.save(livraison);
+    }
+
+    @Override
+    public Livraison terminerLivraison(String id) {
+        Livraison livraison = getLivraisonById(id);
+        livraison.setStatut("livree");
+        livraison.setDateFin(LocalDateTime.now());
+        return livraisonRepository.save(livraison);
+    }
+
+    @Override
+    public PositionTracking ajouterPosition(String livraisonId, Double latitude, Double longitude) {
+        // Valider l'existence de la livraison
+        getLivraisonById(livraisonId);
+
+        PositionTracking tracking = PositionTracking.builder()
+                .livraisonId(livraisonId)
+                .latitude(latitude)
+                .longitude(longitude)
+                .horodatage(LocalDateTime.now())
+                .build();
+
+        return positionTrackingRepository.save(tracking);
+    }
+
+    @Override
+    public List<PositionTracking> getPositions(String livraisonId) {
+        return positionTrackingRepository.findByLivraisonIdOrderByHorodatageAsc(livraisonId);
+    }
+
+    @Override
+    public Livraison getLivraisonById(String id) {
+        return livraisonRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Livraison introuvable avec l'id : " + id));
+    }
+
+    @Override
+    public List<Livraison> getLivraisonsByLivreur(String livreurId) {
+        return livraisonRepository.findByLivreurId(livreurId);
+    }
+
+    @Override
+    public List<Livraison> getLivraisonsByCommande(String commandeId) {
+        return livraisonRepository.findByCommandeId(commandeId);
+    }
+
+    @Override
+    public List<Livraison> getAllLivraisons() {
+        return livraisonRepository.findAll();
+    }
+}

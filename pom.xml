@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>tn.esprit</groupId>
+    <artifactId>plateforme-livraison-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>plateforme-livraison-parent</name>
+    <description>Parent POM de la plateforme de livraison microservices</description>
+
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+
+    <modules>
+        <module>commandes-service</module>
+        <module>auth-service</module>
+        <module>tracking-service</module>
+        <module>livreurs-service</module>
+        <module>ia-service</module>
+        <module>notifications-service</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Ici on peut ajouter des dependances communes si besoin -->
+        </dependencies>
+    </dependencyManagement>
+
+</project>
