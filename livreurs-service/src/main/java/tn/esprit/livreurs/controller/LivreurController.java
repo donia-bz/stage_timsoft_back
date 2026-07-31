@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.livreurs.entity.AffectationVehicule;
 import tn.esprit.livreurs.entity.Depot;
 import tn.esprit.livreurs.entity.Livreur;
 import tn.esprit.livreurs.entity.Vehicule;
+import tn.esprit.livreurs.entity.enums.StatutLivreur;
 import tn.esprit.livreurs.service.LivreurService;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class LivreurController {
     }
 
     @PatchMapping("/livreurs/{id}/statut")
-    public ResponseEntity<Livreur> updateStatut(@PathVariable String id, @RequestParam String statut) {
+    public ResponseEntity<Livreur> updateStatut(@PathVariable String id, @RequestParam StatutLivreur statut) {
         return ResponseEntity.ok(livreurService.updateStatut(id, statut));
     }
 
@@ -52,6 +54,36 @@ public class LivreurController {
             @RequestParam Double latitude,
             @RequestParam Double longitude) {
         return ResponseEntity.ok(livreurService.updatePosition(id, latitude, longitude));
+    }
+
+    @PatchMapping("/livreurs/{id}/depot")
+    public ResponseEntity<Livreur> assignerDepot(@PathVariable String id, @RequestParam String depotId) {
+        return ResponseEntity.ok(livreurService.assignerDepot(id, depotId));
+    }
+
+    @GetMapping("/livreurs/depot/{depotId}")
+    public ResponseEntity<List<Livreur>> getLivreursByDepot(@PathVariable String depotId) {
+        return ResponseEntity.ok(livreurService.getLivreursByDepot(depotId));
+    }
+
+    // --- AffectationVehicule endpoints ---
+
+    @PostMapping("/livreurs/{livreurId}/vehicule")
+    public ResponseEntity<AffectationVehicule> affecterVehicule(
+            @PathVariable String livreurId,
+            @RequestParam String vehiculeId) {
+        AffectationVehicule affectation = livreurService.affecterVehicule(livreurId, vehiculeId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(affectation);
+    }
+
+    @DeleteMapping("/livreurs/{livreurId}/vehicule")
+    public ResponseEntity<AffectationVehicule> desaffecterVehicule(@PathVariable String livreurId) {
+        return ResponseEntity.ok(livreurService.desaffecterVehicule(livreurId));
+    }
+
+    @GetMapping("/livreurs/{livreurId}/affectations")
+    public ResponseEntity<List<AffectationVehicule>> getHistoriqueAffectationsLivreur(@PathVariable String livreurId) {
+        return ResponseEntity.ok(livreurService.getHistoriqueAffectationsLivreur(livreurId));
     }
 
     // --- Vehicule endpoints ---
@@ -68,8 +100,13 @@ public class LivreurController {
     }
 
     @GetMapping("/vehicules/livreur/{livreurId}")
-    public ResponseEntity<Vehicule> getVehiculeByLivreurId(@PathVariable String livreurId) {
-        return ResponseEntity.ok(livreurService.getVehiculeByLivreurId(livreurId));
+    public ResponseEntity<Vehicule> getVehiculeActifByLivreurId(@PathVariable String livreurId) {
+        return ResponseEntity.ok(livreurService.getVehiculeActifByLivreurId(livreurId));
+    }
+
+    @GetMapping("/vehicules/{vehiculeId}/affectations")
+    public ResponseEntity<List<AffectationVehicule>> getHistoriqueAffectationsVehicule(@PathVariable String vehiculeId) {
+        return ResponseEntity.ok(livreurService.getHistoriqueAffectationsVehicule(vehiculeId));
     }
 
     // --- Depot endpoints ---

@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import tn.esprit.commandes.entity.enums.TypeService;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class CommandeRequest {
     private AdresseRequest adresseArrivee;
 
     @NotNull(message = "Le type de service est obligatoire")
-    private TypeService typeService;
+    private String typeService;
 
     @Valid
     private List<ColisRequest> colis;

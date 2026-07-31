@@ -32,11 +32,11 @@ public class IAController {
 
     @PostMapping("/affecter-livreur")
     public ResponseEntity<AffectationIA> affecterLivreur(
-            @RequestParam String colisId,
-            @RequestParam(required = false) Double latColis,
-            @RequestParam(required = false) Double longColis,
+            @RequestParam String commandeId,
+            @RequestParam(required = false) Double latDepart,
+            @RequestParam(required = false) Double longDepart,
             @RequestBody List<LivreurDTO> livreurs) {
-        AffectationIA affectation = iaService.calculerAffectation(colisId, latColis, longColis, livreurs);
+        AffectationIA affectation = iaService.calculerAffectation(commandeId, latDepart, longDepart, livreurs);
         return ResponseEntity.status(HttpStatus.CREATED).body(affectation);
     }
 
@@ -45,8 +45,8 @@ public class IAController {
         return ResponseEntity.ok(iaService.getPredictionsByCommande(commandeId));
     }
 
-    @GetMapping("/affectations/colis/{colisId}")
-    public ResponseEntity<List<AffectationIA>> getAffectationsByColis(@PathVariable String colisId) {
-        return ResponseEntity.ok(iaService.getAffectationsByColis(colisId));
+    @GetMapping("/affectations/commande/{commandeId}")
+    public ResponseEntity<List<AffectationIA>> getAffectationsByCommande(@PathVariable String commandeId) {
+        return ResponseEntity.ok(iaService.getAffectationsByCommande(commandeId));
     }
 }

@@ -18,7 +18,7 @@ public class AffectationIA {
 
     @Id
     private String id;
-    private String colisId;
+    private String commandeId;
     private String livreurId;
     private Double score;
     private LocalDateTime dateCalcul;

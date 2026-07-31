@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import tn.esprit.tracking.entity.enums.StatutLivraison;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -20,7 +22,7 @@ public class Livraison {
     private String id;
     private String commandeId;
     private String livreurId;
-    private String statut; // affectee, en_cours, livree
+    private StatutLivraison statut;
     private LocalDateTime dateAffectation;
     private LocalDateTime dateDebut;
     private LocalDateTime dateFin;

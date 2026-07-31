@@ -12,7 +12,6 @@ import tn.esprit.ia.repository.PredictionDelaiRepository;
 import tn.esprit.ia.service.IAService;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -33,13 +32,12 @@ public class IAServiceImpl implements IAService {
 
         if (latDepart != null && longDepart != null && latArrivee != null && longArrivee != null) {
             double distanceKm = calculateHaversineDistance(latDepart, longDepart, latArrivee, longArrivee);
-            // Estimation : Vitesse moyenne 30 km/h + 15 min de temps de prise en charge/embouteillages
             delaiPreditMin = (int) Math.round((distanceKm / 30.0) * 60.0 + 15.0);
             if ("EXPRESS".equalsIgnoreCase(typeService)) {
-                delaiPreditMin = Math.max(15, (int) (delaiPreditMin * 0.7)); // 30% plus rapide pour l'express
+                delaiPreditMin = Math.max(15, (int) (delaiPreditMin * 0.7));
             }
         } else {
-            delaiPreditMin = 45; // Valeur par defaut si coordonnees absentes
+            delaiPreditMin = 45;
         }
 
         PredictionDelai prediction = PredictionDelai.builder()
@@ -53,23 +51,22 @@ public class IAServiceImpl implements IAService {
     }
 
     @Override
-    public AffectationIA calculerAffectation(String colisId, Double latColis, Double longColis, List<LivreurDTO> livreurs) {
+    public AffectationIA calculerAffectation(String commandeId, Double latDepart, Double longDepart, List<LivreurDTO> livreurs) {
         if (livreurs == null || livreurs.isEmpty()) {
             throw new IllegalArgumentException("Aucun livreur disponible pour l'affectation IA");
         }
 
-        // Trouver le meilleur livreur en fonction du score de proximite et de sa note
         LivreurDTO meilleurLivreur = null;
         double meilleurScore = -1.0;
 
         for (LivreurDTO livreur : livreurs) {
-            double distanceKm = (latColis != null && longColis != null && livreur.getLatitudeActuelle() != null && livreur.getLongitudeActuelle() != null)
-                    ? calculateHaversineDistance(latColis, longColis, livreur.getLatitudeActuelle(), livreur.getLongitudeActuelle())
-                    : 5.0; // 5 km par defaut
+            double distanceKm = (latDepart != null && longDepart != null && livreur.getLatitudeActuelle() != null && livreur.getLongitudeActuelle() != null)
+                    ? calculateHaversineDistance(latDepart, longDepart, livreur.getLatitudeActuelle(), livreur.getLongitudeActuelle())
+                    : 5.0;
 
-            double scoreProximite = 1.0 / (1.0 + distanceKm); // Entre 0 et 1
+            double scoreProximite = 1.0 / (1.0 + distanceKm);
             double noteNorm = (livreur.getNoteMoyenne() != null ? livreur.getNoteMoyenne() : 5.0) / 5.0;
-            double scoreGlobal = (scoreProximite * 0.7) + (noteNorm * 0.3); // 70% distance, 30% note
+            double scoreGlobal = (scoreProximite * 0.7) + (noteNorm * 0.3);
 
             if (scoreGlobal > meilleurScore) {
                 meilleurScore = scoreGlobal;
@@ -78,7 +75,7 @@ public class IAServiceImpl implements IAService {
         }
 
         AffectationIA affectation = AffectationIA.builder()
-                .colisId(colisId)
+                .commandeId(commandeId)
                 .livreurId(meilleurLivreur.getId())
                 .score(Math.round(meilleurScore * 100.0) / 100.0)
                 .dateCalcul(LocalDateTime.now())
@@ -93,12 +90,12 @@ public class IAServiceImpl implements IAService {
     }
 
     @Override
-    public List<AffectationIA> getAffectationsByColis(String colisId) {
-        return affectationIARepository.findByColisId(colisId);
+    public List<AffectationIA> getAffectationsByCommande(String commandeId) {
+        return affectationIARepository.findByCommandeId(commandeId);
     }
 
     private double calculateHaversineDistance(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371; // Rayon de la Terre en km
+        final int R = 6371;
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.commandes.dto.request.PaiementRequest;
 import tn.esprit.commandes.dto.response.PaiementResponse;
+import tn.esprit.commandes.entity.enums.StatutPaiement;
 import tn.esprit.commandes.service.PaiementService;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class PaiementController {
     @PatchMapping("/{id}/statut")
     public ResponseEntity<PaiementResponse> updateStatut(
             @PathVariable String id,
-            @RequestParam String statut) {
+            @RequestParam StatutPaiement statut) {
         return ResponseEntity.ok(paiementService.updateStatutPaiement(id, statut));
     }
 }

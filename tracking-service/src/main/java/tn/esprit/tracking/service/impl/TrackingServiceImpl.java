@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.tracking.entity.Livraison;
 import tn.esprit.tracking.entity.PositionTracking;
+import tn.esprit.tracking.entity.enums.StatutLivraison;
 import tn.esprit.tracking.repository.LivraisonRepository;
 import tn.esprit.tracking.repository.PositionTrackingRepository;
 import tn.esprit.tracking.service.TrackingService;
@@ -23,7 +24,7 @@ public class TrackingServiceImpl implements TrackingService {
         Livraison livraison = Livraison.builder()
                 .commandeId(commandeId)
                 .livreurId(livreurId)
-                .statut("affectee")
+                .statut(StatutLivraison.AFFECTEE)
                 .dateAffectation(LocalDateTime.now())
                 .distanceKm(0.0)
                 .build();
@@ -33,7 +34,7 @@ public class TrackingServiceImpl implements TrackingService {
     @Override
     public Livraison demarrerLivraison(String id) {
         Livraison livraison = getLivraisonById(id);
-        livraison.setStatut("en_cours");
+        livraison.setStatut(StatutLivraison.EN_COURS);
         livraison.setDateDebut(LocalDateTime.now());
         return livraisonRepository.save(livraison);
     }
@@ -41,14 +42,21 @@ public class TrackingServiceImpl implements TrackingService {
     @Override
     public Livraison terminerLivraison(String id) {
         Livraison livraison = getLivraisonById(id);
-        livraison.setStatut("livree");
+        livraison.setStatut(StatutLivraison.LIVREE);
+        livraison.setDateFin(LocalDateTime.now());
+        return livraisonRepository.save(livraison);
+    }
+
+    @Override
+    public Livraison echouerLivraison(String id) {
+        Livraison livraison = getLivraisonById(id);
+        livraison.setStatut(StatutLivraison.ECHOUEE);
         livraison.setDateFin(LocalDateTime.now());
         return livraisonRepository.save(livraison);
     }
 
     @Override
     public PositionTracking ajouterPosition(String livraisonId, Double latitude, Double longitude) {
-        // Valider l'existence de la livraison
         getLivraisonById(livraisonId);
 
         PositionTracking tracking = PositionTracking.builder()

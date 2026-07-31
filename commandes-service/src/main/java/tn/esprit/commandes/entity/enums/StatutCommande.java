@@ -2,7 +2,7 @@ package tn.esprit.commandes.entity.enums;
 
 public enum StatutCommande {
     EN_ATTENTE,
-    VALIDEE,
+    CONFIRMEE,
     EN_LIVRAISON,
     LIVREE,
     ANNULEE

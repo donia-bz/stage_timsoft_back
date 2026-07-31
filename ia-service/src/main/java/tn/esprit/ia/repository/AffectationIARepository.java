@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AffectationIARepository extends MongoRepository<AffectationIA, String> {
-    List<AffectationIA> findByColisId(String colisId);
+    List<AffectationIA> findByCommandeId(String commandeId);
 }

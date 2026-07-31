@@ -1,14 +1,17 @@
 package tn.esprit.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tn.esprit.auth.dto.AuthResponse;
 import tn.esprit.auth.dto.LoginRequest;
 import tn.esprit.auth.dto.RegisterRequest;
 import tn.esprit.auth.entity.Admin;
+import tn.esprit.auth.entity.Adresse;
 import tn.esprit.auth.entity.Client;
 import tn.esprit.auth.entity.Livreur;
 import tn.esprit.auth.entity.Utilisateur;
+import tn.esprit.auth.entity.enums.StatutLivreur;
 import tn.esprit.auth.repository.UtilisateurRepository;
 import tn.esprit.auth.service.AuthService;
 
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 public class AuthServiceImpl implements AuthService {
 
     private final UtilisateurRepository utilisateurRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AuthResponse register(RegisterRequest request) {
@@ -28,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Un utilisateur existe déjà avec cet email : " + request.getEmail());
         }
 
+        String motDePasseHash = passwordEncoder.encode(request.getMotDePasse());
         Utilisateur utilisateur;
         String roleStr = request.getRole().toUpperCase();
 
@@ -37,13 +42,12 @@ public class AuthServiceImpl implements AuthService {
                         .nom(request.getNom())
                         .prenom(request.getPrenom())
                         .email(request.getEmail())
-                        .motDePasse(request.getMotDePasse())
+                        .motDePasseHash(motDePasseHash)
                         .telephone(request.getTelephone())
                         .role("CLIENT")
                         .dateCreation(LocalDateTime.now())
                         .entreprise(request.getEntreprise())
-                        .adresseDefautId(request.getAdresseDefautId())
-                        .approuve(false)
+                        .adresseDefaut(toAdresse(request.getAdresseDefaut()))
                         .build();
                 break;
             case "LIVREUR":
@@ -51,15 +55,14 @@ public class AuthServiceImpl implements AuthService {
                         .nom(request.getNom())
                         .prenom(request.getPrenom())
                         .email(request.getEmail())
-                        .motDePasse(request.getMotDePasse())
+                        .motDePasseHash(motDePasseHash)
                         .telephone(request.getTelephone())
                         .role("LIVREUR")
                         .dateCreation(LocalDateTime.now())
-                        .statut("disponible")
+                        .statut(StatutLivreur.DISPONIBLE)
                         .latitudeActuelle(0.0)
                         .longitudeActuelle(0.0)
                         .noteMoyenne(5.0)
-                        .approuve(false)
                         .build();
                 break;
             case "ADMIN":
@@ -67,12 +70,11 @@ public class AuthServiceImpl implements AuthService {
                         .nom(request.getNom())
                         .prenom(request.getPrenom())
                         .email(request.getEmail())
-                        .motDePasse(request.getMotDePasse())
+                        .motDePasseHash(motDePasseHash)
                         .telephone(request.getTelephone())
                         .role("ADMIN")
                         .dateCreation(LocalDateTime.now())
                         .niveauAcces(request.getNiveauAcces() != null ? request.getNiveauAcces() : "MODERATEUR")
-                        .approuve(true)
                         .build();
                 break;
             default:
@@ -96,13 +98,11 @@ public class AuthServiceImpl implements AuthService {
         Utilisateur utilisateur = utilisateurRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Identifiants incorrects"));
 
-        if (!utilisateur.getMotDePasse().equals(request.getMotDePasse())) {
+        if (!passwordEncoder.matches(request.getMotDePasse(), utilisateur.getMotDePasseHash())) {
             throw new IllegalArgumentException("Identifiants incorrects");
         }
 
-        if (utilisateur.getApprouve() != null && !utilisateur.getApprouve()) {
-            throw new IllegalArgumentException("Votre compte est en attente d'approbation par l'administrateur.");
-        }
+
 
         return AuthResponse.builder()
                 .id(utilisateur.getId())
@@ -132,13 +132,19 @@ public class AuthServiceImpl implements AuthService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public Utilisateur approuverUtilisateur(String id) {
-        Utilisateur u = utilisateurRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'id : " + id));
-        u.setApprouve(true);
-        Utilisateur saved = utilisateurRepository.save(u);
-        System.out.println("Notification SMS/Mail envoyée à " + u.getTelephone() + " / " + u.getEmail() + " : Compte activé. Identifiants: " + u.getEmail() + " / " + u.getMotDePasse());
-        return saved;
+
+
+    private Adresse toAdresse(tn.esprit.auth.dto.AdresseRequest ar) {
+        if (ar == null) {
+            return null;
+        }
+        return Adresse.builder()
+                .rue(ar.getRue())
+                .ville(ar.getVille())
+                .codePostal(ar.getCodePostal())
+                .latitude(ar.getLatitude())
+                .longitude(ar.getLongitude())
+                .adressePrincipale(ar.getAdressePrincipale())
+                .build();
     }
 }

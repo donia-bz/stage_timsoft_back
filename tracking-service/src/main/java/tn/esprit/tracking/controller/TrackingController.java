@@ -35,6 +35,11 @@ public class TrackingController {
         return ResponseEntity.ok(trackingService.terminerLivraison(id));
     }
 
+    @PatchMapping("/livraisons/{id}/echouer")
+    public ResponseEntity<Livraison> echouer(@PathVariable String id) {
+        return ResponseEntity.ok(trackingService.echouerLivraison(id));
+    }
+
     @GetMapping("/livraisons/{id}")
     public ResponseEntity<Livraison> getById(@PathVariable String id) {
         return ResponseEntity.ok(trackingService.getLivraisonById(id));

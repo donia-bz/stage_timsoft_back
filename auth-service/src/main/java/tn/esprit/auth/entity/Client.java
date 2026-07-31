@@ -13,5 +13,5 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class Client extends Utilisateur {
     private String entreprise;
-    private String adresseDefautId;
+    private Adresse adresseDefaut;
 }

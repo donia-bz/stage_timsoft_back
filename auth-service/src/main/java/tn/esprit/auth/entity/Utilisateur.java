@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -23,11 +24,11 @@ public class Utilisateur {
     private String nom;
     private String prenom;
     private String email;
-    private String motDePasse;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String motDePasseHash;
     private String telephone;
 
     @CreatedDate
     private LocalDateTime dateCreation;
     private String role; // CLIENT, LIVREUR, ADMIN
-    private Boolean approuve;
 }

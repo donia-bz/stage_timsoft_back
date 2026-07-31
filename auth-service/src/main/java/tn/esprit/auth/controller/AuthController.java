@@ -48,10 +48,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.getUsersByRole(role));
     }
 
-    @PatchMapping("/users/{id}/approuver")
-    public ResponseEntity<Utilisateur> approuverUtilisateur(@PathVariable String id) {
-        return ResponseEntity.ok(authService.approuverUtilisateur(id));
-    }
+
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {

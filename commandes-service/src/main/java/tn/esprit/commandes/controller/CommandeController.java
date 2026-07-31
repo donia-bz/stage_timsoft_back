@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.commandes.dto.request.CommandeRequest;
 import tn.esprit.commandes.dto.response.CommandeResponse;
+import tn.esprit.commandes.entity.enums.StatutCommande;
 import tn.esprit.commandes.service.CommandeService;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class CommandeController {
     @PatchMapping("/{id}/statut")
     public ResponseEntity<CommandeResponse> updateStatut(
             @PathVariable String id,
-            @RequestParam String statut) {
+            @RequestParam StatutCommande statut) {
         return ResponseEntity.ok(commandeService.updateStatut(id, statut));
     }
 

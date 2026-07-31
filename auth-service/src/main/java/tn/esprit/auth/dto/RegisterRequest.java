@@ -27,7 +27,7 @@ public class RegisterRequest {
 
     // Specifique Client
     private String entreprise;
-    private String adresseDefautId;
+    private AdresseRequest adresseDefaut;
 
     // Specifique Admin
     private String niveauAcces;

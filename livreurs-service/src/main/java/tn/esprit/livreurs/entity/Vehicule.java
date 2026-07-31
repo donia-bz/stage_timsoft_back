@@ -16,8 +16,7 @@ public class Vehicule {
 
     @Id
     private String id;
-    private String livreurId;
-    private String type; // MOTO, VOITURE, VELO
+    private String type;
     private String immatriculation;
     private Double capaciteChargeKg;
 }

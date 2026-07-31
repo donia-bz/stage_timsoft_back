@@ -8,10 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tn.esprit.commandes.entity.enums.StatutCommande;
-import tn.esprit.commandes.entity.enums.TypeService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
@@ -25,17 +23,15 @@ public class Commande {
 
     private String clientId;
 
-    private Adresse adresseDepart;   // embarque
-    private Adresse adresseArrivee;  // embarque
+    private Adresse adresseDepart;
+    private Adresse adresseArrivee;
 
     private StatutCommande statut;
-    private TypeService typeService;
+    private String typeService;
 
     @CreatedDate
     private LocalDateTime dateCreation;
 
     private Integer delaiEstimeMin;
     private Double montantTotal;
-
-    private List<String> colisIds; // references vers la collection "colis"
 }

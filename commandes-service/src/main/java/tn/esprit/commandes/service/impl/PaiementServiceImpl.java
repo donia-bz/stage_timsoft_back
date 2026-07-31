@@ -7,6 +7,7 @@ import tn.esprit.commandes.dto.response.PaiementResponse;
 import tn.esprit.commandes.entity.Commande;
 import tn.esprit.commandes.entity.Paiement;
 import tn.esprit.commandes.entity.enums.StatutCommande;
+import tn.esprit.commandes.entity.enums.StatutPaiement;
 import tn.esprit.commandes.exception.ResourceNotFoundException;
 import tn.esprit.commandes.repository.CommandeRepository;
 import tn.esprit.commandes.repository.PaiementRepository;
@@ -31,14 +32,13 @@ public class PaiementServiceImpl implements PaiementService {
                 .commandeId(request.getCommandeId())
                 .montant(request.getMontant())
                 .methode(request.getMethode())
-                .statut("PAYE")
+                .statut(StatutPaiement.PAYE)
                 .build();
 
         Paiement sauvegarde = paiementRepository.save(paiement);
 
-        // Mettre a jour la commande
         commande.setMontantTotal(request.getMontant());
-        commande.setStatut(StatutCommande.VALIDEE);
+        commande.setStatut(StatutCommande.CONFIRMEE);
         commandeRepository.save(commande);
 
         return toResponse(sauvegarde);
@@ -59,7 +59,7 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
-    public PaiementResponse updateStatutPaiement(String id, String statut) {
+    public PaiementResponse updateStatutPaiement(String id, StatutPaiement statut) {
         Paiement paiement = paiementRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Paiement introuvable avec l'id : " + id));
         paiement.setStatut(statut);

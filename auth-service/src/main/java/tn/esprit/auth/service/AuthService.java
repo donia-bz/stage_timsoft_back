@@ -13,5 +13,4 @@ public interface AuthService {
     Utilisateur getProfile(String id);
     List<Utilisateur> getAllUsers();
     List<Utilisateur> getUsersByRole(String role);
-    Utilisateur approuverUtilisateur(String id);
 }

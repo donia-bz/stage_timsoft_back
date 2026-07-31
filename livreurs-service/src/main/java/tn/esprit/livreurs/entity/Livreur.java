@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import tn.esprit.livreurs.entity.enums.StatutLivreur;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,12 +17,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Livreur {
 
     @Id
-    private String id; // ID correspondant a l'Utilisateur de role LIVREUR dans auth-service
+    private String id;
     private String nom;
     private String prenom;
-    private String statut; // disponible, en_course, hors_ligne
+    private StatutLivreur statut;
     private Double latitudeActuelle;
     private Double longitudeActuelle;
-    private String vehiculeId;
     private Double noteMoyenne;
+    private String depotId;
 }

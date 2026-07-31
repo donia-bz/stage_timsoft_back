@@ -9,6 +9,7 @@ public interface TrackingService {
     Livraison creerLivraison(String commandeId, String livreurId);
     Livraison demarrerLivraison(String id);
     Livraison terminerLivraison(String id);
+    Livraison echouerLivraison(String id);
     PositionTracking ajouterPosition(String livraisonId, Double latitude, Double longitude);
     List<PositionTracking> getPositions(String livraisonId);
     Livraison getLivraisonById(String id);

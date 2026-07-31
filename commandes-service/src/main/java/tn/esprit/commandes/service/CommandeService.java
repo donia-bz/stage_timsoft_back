@@ -2,6 +2,7 @@ package tn.esprit.commandes.service;
 
 import tn.esprit.commandes.dto.request.CommandeRequest;
 import tn.esprit.commandes.dto.response.CommandeResponse;
+import tn.esprit.commandes.entity.enums.StatutCommande;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface CommandeService {
 
     List<CommandeResponse> getCommandesByClient(String clientId);
 
-    CommandeResponse updateStatut(String id, String nouveauStatut);
+    CommandeResponse updateStatut(String id, StatutCommande nouveauStatut);
 
     void supprimerCommande(String id);
 }

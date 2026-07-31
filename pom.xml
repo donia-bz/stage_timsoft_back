@@ -29,6 +29,7 @@
         <module>livreurs-service</module>
         <module>ia-service</module>
         <module>notifications-service</module>
+        <module>audit-service</module>
     </modules>
 
     <dependencyManagement>

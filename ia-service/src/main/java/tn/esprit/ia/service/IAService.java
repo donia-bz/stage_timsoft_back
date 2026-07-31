@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IAService {
     PredictionDelai predirDelai(String commandeId, Double latDepart, Double longDepart, Double latArrivee, Double longArrivee, String typeService);
-    AffectationIA calculerAffectation(String colisId, Double latColis, Double longColis, List<LivreurDTO> livreurs);
+    AffectationIA calculerAffectation(String commandeId, Double latDepart, Double longDepart, List<LivreurDTO> livreurs);
     List<PredictionDelai> getPredictionsByCommande(String commandeId);
-    List<AffectationIA> getAffectationsByColis(String colisId);
+    List<AffectationIA> getAffectationsByCommande(String commandeId);
 }

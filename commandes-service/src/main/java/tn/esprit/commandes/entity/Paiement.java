@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import tn.esprit.commandes.entity.enums.StatutPaiement;
 
 @Data
 @Builder
@@ -19,6 +20,6 @@ public class Paiement {
 
     private String commandeId;
     private Double montant;
-    private String methode;   // CASH, CARTE
-    private String statut;    // EN_ATTENTE, PAYE, ECHOUE
+    private String methode;
+    private StatutPaiement statut;
 }

@@ -12,6 +12,7 @@ import tn.esprit.commandes.entity.Commande;
 import tn.esprit.commandes.entity.enums.StatutColis;
 import tn.esprit.commandes.entity.enums.StatutCommande;
 import tn.esprit.commandes.exception.ResourceNotFoundException;
+import tn.esprit.commandes.client.AuditClient;
 import tn.esprit.commandes.repository.ColisRepository;
 import tn.esprit.commandes.repository.CommandeRepository;
 import tn.esprit.commandes.service.CommandeService;
@@ -26,6 +27,7 @@ public class CommandeServiceImpl implements CommandeService {
 
     private final CommandeRepository commandeRepository;
     private final ColisRepository colisRepository;
+    private final AuditClient auditClient;
 
     @Override
     public CommandeResponse creerCommande(CommandeRequest request) {
@@ -48,9 +50,6 @@ public class CommandeServiceImpl implements CommandeService {
                         .map(cr -> toColis(cr, commandeSauvegardee.getId()))
                         .map(colisRepository::save)
                         .collect(Collectors.toList());
-
-        commandeSauvegardee.setColisIds(colisList.stream().map(Colis::getId).collect(Collectors.toList()));
-        commandeRepository.save(commandeSauvegardee);
 
         return toResponse(commandeSauvegardee, colisList);
     }
@@ -77,10 +76,13 @@ public class CommandeServiceImpl implements CommandeService {
     }
 
     @Override
-    public CommandeResponse updateStatut(String id, String nouveauStatut) {
+    public CommandeResponse updateStatut(String id, StatutCommande nouveauStatut) {
         Commande commande = findCommandeOrThrow(id);
-        commande.setStatut(StatutCommande.valueOf(nouveauStatut));
+        StatutCommande ancienStatut = commande.getStatut();
+        commande.setStatut(nouveauStatut);
         Commande updated = commandeRepository.save(commande);
+        auditClient.enregistrerChangementStatut("Commande", id,
+                ancienStatut != null ? ancienStatut.name() : null, nouveauStatut.name());
         return toResponse(updated, colisRepository.findByCommandeId(id));
     }
 
