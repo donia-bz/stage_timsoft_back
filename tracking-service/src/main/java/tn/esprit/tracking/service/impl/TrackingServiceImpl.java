@@ -20,9 +20,9 @@ public class TrackingServiceImpl implements TrackingService {
     private final PositionTrackingRepository positionTrackingRepository;
 
     @Override
-    public Livraison creerLivraison(String commandeId, String livreurId) {
+    public Livraison creerLivraison(String colisId, String livreurId) {
         Livraison livraison = Livraison.builder()
-                .commandeId(commandeId)
+                .colisId(colisId)
                 .livreurId(livreurId)
                 .statut(StatutLivraison.AFFECTEE)
                 .dateAffectation(LocalDateTime.now())
@@ -86,8 +86,8 @@ public class TrackingServiceImpl implements TrackingService {
     }
 
     @Override
-    public List<Livraison> getLivraisonsByCommande(String commandeId) {
-        return livraisonRepository.findByCommandeId(commandeId);
+    public List<Livraison> getLivraisonsByColis(String colisId) {
+        return livraisonRepository.findByColisId(colisId);
     }
 
     @Override

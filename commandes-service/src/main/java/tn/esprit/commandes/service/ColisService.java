@@ -8,5 +8,7 @@ public interface ColisService {
 
     List<ColisResponse> getColisByCommande(String commandeId);
 
+    List<ColisResponse> getColisByClient(String clientId);
+
     ColisResponse getColisById(String id);
 }

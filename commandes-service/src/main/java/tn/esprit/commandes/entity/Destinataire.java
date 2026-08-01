@@ -1,4 +1,4 @@
-package tn.esprit.auth.entity;
+package tn.esprit.commandes.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +11,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "adresses")
-public class Adresse {
+@Document(collection = "destinataires")
+public class Destinataire {
+
     @Id
     private String id;
-    private String rue;
-    private String ville;
-    private String codePostal;
-    private Float latitude;
-    private Float longitude;
-    private Boolean adressePrincipale;
+    private String nom;
+    private String telephone;
+    private String adresseId;
 }

@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
@@ -13,5 +15,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class Client extends Utilisateur {
     private String entreprise;
-    private Adresse adresseDefaut;
+    private String matriculeFiscal;
+    private List<String> adressesEnregistreesIds;
+    private List<String> adressesRamassageIds;
 }

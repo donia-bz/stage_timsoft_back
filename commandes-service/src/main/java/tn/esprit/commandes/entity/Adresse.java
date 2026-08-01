@@ -4,16 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * Adresse est un objet embarque (pas de collection MongoDB dediee).
- * Elle vit toujours a l'interieur d'une Commande (adresseDepart / adresseArrivee).
+ * Adresse est une entité autonome avec sa propre collection MongoDB.
+ * Elle peut être référencée par Client, Expediteur, Depot, etc.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "adresses")
 public class Adresse {
+    @Id
     private String id;
     private String rue;
     private String ville;

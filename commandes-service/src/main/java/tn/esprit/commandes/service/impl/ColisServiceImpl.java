@@ -25,6 +25,13 @@ public class ColisServiceImpl implements ColisService {
     }
 
     @Override
+    public List<ColisResponse> getColisByClient(String clientId) {
+        return colisRepository.findByClientId(clientId).stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ColisResponse getColisById(String id) {
         Colis colis = colisRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Colis introuvable avec l'id : " + id));
@@ -35,6 +42,9 @@ public class ColisServiceImpl implements ColisService {
         return ColisResponse.builder()
                 .id(c.getId())
                 .commandeId(c.getCommandeId())
+                .clientId(c.getClientId())
+                .destinataireId(c.getDestinataireId())
+                .depotId(c.getDepotId())
                 .poids(c.getPoids())
                 .dimensions(c.getDimensions())
                 .fragile(c.getFragile())

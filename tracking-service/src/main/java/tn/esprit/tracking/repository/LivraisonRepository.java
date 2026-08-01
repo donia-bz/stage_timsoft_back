@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface LivraisonRepository extends MongoRepository<Livraison, String> {
     List<Livraison> findByLivreurId(String livreurId);
-    List<Livraison> findByCommandeId(String commandeId);
+    List<Livraison> findByColisId(String colisId);
 }

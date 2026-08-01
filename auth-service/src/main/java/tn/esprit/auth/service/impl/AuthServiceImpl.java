@@ -7,7 +7,6 @@ import tn.esprit.auth.dto.AuthResponse;
 import tn.esprit.auth.dto.LoginRequest;
 import tn.esprit.auth.dto.RegisterRequest;
 import tn.esprit.auth.entity.Admin;
-import tn.esprit.auth.entity.Adresse;
 import tn.esprit.auth.entity.Client;
 import tn.esprit.auth.entity.Livreur;
 import tn.esprit.auth.entity.Utilisateur;
@@ -47,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
                         .role("CLIENT")
                         .dateCreation(LocalDateTime.now())
                         .entreprise(request.getEntreprise())
-                        .adresseDefaut(toAdresse(request.getAdresseDefaut()))
+                        .matriculeFiscal(request.getMatriculeFiscal())
                         .build();
                 break;
             case "LIVREUR":
@@ -60,9 +59,9 @@ public class AuthServiceImpl implements AuthService {
                         .role("LIVREUR")
                         .dateCreation(LocalDateTime.now())
                         .statut(StatutLivreur.DISPONIBLE)
-                        .latitudeActuelle(0.0)
-                        .longitudeActuelle(0.0)
-                        .noteMoyenne(5.0)
+                        .latitudeActuelle(0.0f)
+                        .longitudeActuelle(0.0f)
+                        .noteMoyenne(5.0f)
                         .build();
                 break;
             case "ADMIN":
@@ -130,21 +129,5 @@ public class AuthServiceImpl implements AuthService {
         return utilisateurRepository.findAll().stream()
                 .filter(u -> u.getRole().equalsIgnoreCase(role))
                 .collect(Collectors.toList());
-    }
-
-
-
-    private Adresse toAdresse(tn.esprit.auth.dto.AdresseRequest ar) {
-        if (ar == null) {
-            return null;
-        }
-        return Adresse.builder()
-                .rue(ar.getRue())
-                .ville(ar.getVille())
-                .codePostal(ar.getCodePostal())
-                .latitude(ar.getLatitude())
-                .longitude(ar.getLongitude())
-                .adressePrincipale(ar.getAdressePrincipale())
-                .build();
     }
 }

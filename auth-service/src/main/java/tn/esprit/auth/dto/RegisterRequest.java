@@ -25,9 +25,9 @@ public class RegisterRequest {
     @NotBlank(message = "Le role est obligatoire (CLIENT, LIVREUR, ADMIN)")
     private String role;
 
-    // Specifique Client
+    // Specifique Client (optionnel pour usage pro)
     private String entreprise;
-    private AdresseRequest adresseDefaut;
+    private String matriculeFiscal;
 
     // Specifique Admin
     private String niveauAcces;

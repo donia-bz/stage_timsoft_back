@@ -7,33 +7,25 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import tn.esprit.commandes.entity.enums.StatutCommande;
+import tn.esprit.commandes.entity.enums.StatutManifeste;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "commandes")
-public class Commande {
+@Document(collection = "manifestes")
+public class Manifeste {
 
     @Id
     private String id;
     private String clientId;
 
-    private String adresseDepartId;
-    private String adresseArriveeId;
-
-    private StatutCommande statut;
-    private String typeService;
-
     @CreatedDate
     private LocalDateTime dateCreation;
-
-    private Integer delaiEstimeMin;
-    private Double montantTotal;
-
-    private String predictionDelaiId;
-    private String affectationIAId;
+    private Integer nombreColis;
+    private StatutManifeste statut;
+    private List<String> colisIds;
 }

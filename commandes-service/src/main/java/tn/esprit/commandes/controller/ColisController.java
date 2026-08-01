@@ -27,4 +27,9 @@ public class ColisController {
     public ResponseEntity<List<ColisResponse>> getByCommande(@PathVariable String commandeId) {
         return ResponseEntity.ok(colisService.getColisByCommande(commandeId));
     }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<ColisResponse>> getByClient(@PathVariable String clientId) {
+        return ResponseEntity.ok(colisService.getColisByClient(clientId));
+    }
 }

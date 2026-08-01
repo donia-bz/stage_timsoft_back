@@ -13,13 +13,11 @@ public class CommandeRequest {
     @NotBlank(message = "L'identifiant client est obligatoire")
     private String clientId;
 
-    @Valid
-    @NotNull(message = "L'adresse de depart est obligatoire")
-    private AdresseRequest adresseDepart;
+    @NotBlank(message = "L'adresse de depart est obligatoire")
+    private String adresseDepartId;
 
-    @Valid
-    @NotNull(message = "L'adresse d'arrivee est obligatoire")
-    private AdresseRequest adresseArrivee;
+    @NotBlank(message = "L'adresse d'arrivee est obligatoire")
+    private String adresseArriveeId;
 
     @NotNull(message = "Le type de service est obligatoire")
     private String typeService;

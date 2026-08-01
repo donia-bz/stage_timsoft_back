@@ -14,7 +14,7 @@ import tn.esprit.auth.entity.enums.StatutLivreur;
 @AllArgsConstructor
 public class Livreur extends Utilisateur {
     private StatutLivreur statut;
-    private Double latitudeActuelle;
-    private Double longitudeActuelle;
-    private Double noteMoyenne;
+    private Float latitudeActuelle;
+    private Float longitudeActuelle;
+    private Float noteMoyenne;
 }

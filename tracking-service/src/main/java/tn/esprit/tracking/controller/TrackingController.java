@@ -20,8 +20,8 @@ public class TrackingController {
     // --- Livraison endpoints ---
 
     @PostMapping("/livraisons")
-    public ResponseEntity<Livraison> creer(@RequestParam String commandeId, @RequestParam String livreurId) {
-        Livraison livraison = trackingService.creerLivraison(commandeId, livreurId);
+    public ResponseEntity<Livraison> creer(@RequestParam String colisId, @RequestParam String livreurId) {
+        Livraison livraison = trackingService.creerLivraison(colisId, livreurId);
         return ResponseEntity.status(HttpStatus.CREATED).body(livraison);
     }
 
@@ -55,9 +55,9 @@ public class TrackingController {
         return ResponseEntity.ok(trackingService.getLivraisonsByLivreur(livreurId));
     }
 
-    @GetMapping("/livraisons/commande/{commandeId}")
-    public ResponseEntity<List<Livraison>> getByCommande(@PathVariable String commandeId) {
-        return ResponseEntity.ok(trackingService.getLivraisonsByCommande(commandeId));
+    @GetMapping("/livraisons/colis/{colisId}")
+    public ResponseEntity<List<Livraison>> getByColis(@PathVariable String colisId) {
+        return ResponseEntity.ok(trackingService.getLivraisonsByColis(colisId));
     }
 
     // --- Position tracking endpoints ---

@@ -34,8 +34,8 @@ public class CommandeServiceImpl implements CommandeService {
 
         Commande commande = Commande.builder()
                 .clientId(request.getClientId())
-                .adresseDepart(toAdresse(request.getAdresseDepart()))
-                .adresseArrivee(toAdresse(request.getAdresseArrivee()))
+                .adresseDepartId(request.getAdresseDepartId())
+                .adresseArriveeId(request.getAdresseArriveeId())
                 .typeService(request.getTypeService())
                 .statut(StatutCommande.EN_ATTENTE)
                 .dateCreation(LocalDateTime.now())
@@ -100,16 +100,6 @@ public class CommandeServiceImpl implements CommandeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Commande introuvable avec l'id : " + id));
     }
 
-    private Adresse toAdresse(tn.esprit.commandes.dto.request.AdresseRequest ar) {
-        return Adresse.builder()
-                .rue(ar.getRue())
-                .ville(ar.getVille())
-                .codePostal(ar.getCodePostal())
-                .latitude(ar.getLatitude())
-                .longitude(ar.getLongitude())
-                .build();
-    }
-
     private Colis toColis(ColisRequest cr, String commandeId) {
         return Colis.builder()
                 .commandeId(commandeId)
@@ -135,8 +125,8 @@ public class CommandeServiceImpl implements CommandeService {
         return CommandeResponse.builder()
                 .id(c.getId())
                 .clientId(c.getClientId())
-                .adresseDepart(c.getAdresseDepart())
-                .adresseArrivee(c.getAdresseArrivee())
+                .adresseDepartId(c.getAdresseDepartId())
+                .adresseArriveeId(c.getAdresseArriveeId())
                 .statut(c.getStatut())
                 .typeService(c.getTypeService())
                 .dateCreation(c.getDateCreation())

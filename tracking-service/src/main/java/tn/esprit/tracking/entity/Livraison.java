@@ -20,7 +20,7 @@ public class Livraison {
 
     @Id
     private String id;
-    private String commandeId;
+    private String colisId;
     private String livreurId;
     private StatutLivraison statut;
     private LocalDateTime dateAffectation;

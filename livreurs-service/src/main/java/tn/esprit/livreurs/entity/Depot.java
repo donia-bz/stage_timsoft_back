@@ -18,6 +18,6 @@ public class Depot {
     private String id;
     private String nom;
     private String ville;
-    private Adresse adresse; // Embedded Adresse
+    private String adresseId;
     private Integer capacite;
 }

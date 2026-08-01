@@ -1,0 +1,66 @@
+package tn.esprit.commandes.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import tn.esprit.commandes.dto.request.ManifesteRequest;
+import tn.esprit.commandes.entity.Manifeste;
+import tn.esprit.commandes.entity.enums.StatutManifeste;
+import tn.esprit.commandes.service.ManifesteService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/manifestes")
+@RequiredArgsConstructor
+public class ManifesteController {
+
+    private final ManifesteService manifesteService;
+
+    @PostMapping
+    public ResponseEntity<Manifeste> create(@RequestBody ManifesteRequest request) {
+        Manifeste manifeste = Manifeste.builder()
+                .clientId(request.getClientId())
+                .nombreColis(request.getNombreColis())
+                .statut(StatutManifeste.BROUILLON)
+                .colisIds(request.getColisIds())
+                .build();
+        return ResponseEntity.ok(manifesteService.createManifeste(manifeste));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Manifeste> getById(@PathVariable String id) {
+        return ResponseEntity.ok(manifesteService.getManifesteById(id));
+    }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<Manifeste>> getByClient(@PathVariable String clientId) {
+        return ResponseEntity.ok(manifesteService.getManifestesByClient(clientId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Manifeste>> getAll() {
+        return ResponseEntity.ok(manifesteService.getAllManifestes());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Manifeste> update(@PathVariable String id, @RequestBody ManifesteRequest request) {
+        Manifeste existing = manifesteService.getManifesteById(id);
+        if (request.getClientId() != null) {
+            existing.setClientId(request.getClientId());
+        }
+        if (request.getNombreColis() != null) {
+            existing.setNombreColis(request.getNombreColis());
+        }
+        if (request.getColisIds() != null) {
+            existing.setColisIds(request.getColisIds());
+        }
+        return ResponseEntity.ok(manifesteService.updateManifeste(id, existing));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        manifesteService.deleteManifeste(id);
+        return ResponseEntity.noContent().build();
+    }
+}

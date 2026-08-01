@@ -17,8 +17,8 @@ import java.util.List;
 public class CommandeResponse {
     private String id;
     private String clientId;
-    private Adresse adresseDepart;
-    private Adresse adresseArrivee;
+    private String adresseDepartId;
+    private String adresseArriveeId;
     private StatutCommande statut;
     private String typeService;
     private LocalDateTime dateCreation;

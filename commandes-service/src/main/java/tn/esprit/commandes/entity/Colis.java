@@ -18,7 +18,10 @@ public class Colis {
     @Id
     private String id;
 
-    private String commandeId;
+    private String commandeId; // Optionnel : null si envoi direct par Client
+    private String clientId;   // Optionnel : requis si envoi direct par Client
+    private String destinataireId;
+    private String depotId;
     private Double poids;
     private String dimensions;
     private Boolean fragile;
