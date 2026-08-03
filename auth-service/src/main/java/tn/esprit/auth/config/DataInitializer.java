@@ -41,19 +41,22 @@ public class DataInitializer implements CommandLineRunner {
         utilisateurRepository.save(admin);
         System.out.println("✅ Compte admin créé : admin@bfexpress.com / admin123");
 
-        // Créer un compte client de test
+        // Créer un compte client de test avec des informations pro
         Client client = Client.builder()
-                .nom("Client")
-                .prenom("Test")
+                .nom("Bouzouita")
+                .prenom("Chirine")
                 .email("client@bfexpress.com")
                 .motDePasseHash(passwordEncoder.encode("client123"))
                 .telephone("71234567")
                 .role("CLIENT")
                 .dateCreation(LocalDateTime.now())
+                .entreprise("BFExpress SARL")
+                .matriculeFiscal("1234567/A/M/000")
                 .build();
         
-        utilisateurRepository.save(client);
+        Client savedClient = utilisateurRepository.save(client);
         System.out.println("✅ Compte client créé : client@bfexpress.com / client123");
+        System.out.println("   ID Client : " + savedClient.getId());
 
         // Créer un compte livreur de test
         Livreur livreur = Livreur.builder()
@@ -70,9 +73,14 @@ public class DataInitializer implements CommandLineRunner {
                 .noteMoyenne(5.0f)
                 .build();
         
-        utilisateurRepository.save(livreur);
+        Livreur savedLivreur = utilisateurRepository.save(livreur);
         System.out.println("✅ Compte livreur créé : livreur@bfexpress.com / livreur123");
+        System.out.println("   ID Livreur : " + savedLivreur.getId());
 
         System.out.println("🎉 Initialisation des données de test terminée !");
+        System.out.println("📋 Identifiants de connexion :");
+        System.out.println("   ADMIN : admin@bfexpress.com / admin123");
+        System.out.println("   CLIENT : client@bfexpress.com / client123");
+        System.out.println("   LIVREUR : livreur@bfexpress.com / livreur123");
     }
 }
