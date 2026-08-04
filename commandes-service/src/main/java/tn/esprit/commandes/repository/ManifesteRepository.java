@@ -2,9 +2,12 @@ package tn.esprit.commandes.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import tn.esprit.commandes.entity.Manifeste;
+import tn.esprit.commandes.entity.enums.StatutManifeste;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ManifesteRepository extends MongoRepository<Manifeste, String> {
     List<Manifeste> findByClientId(String clientId);
+    Optional<Manifeste> findByClientIdAndStatut(String clientId, StatutManifeste statut);
 }

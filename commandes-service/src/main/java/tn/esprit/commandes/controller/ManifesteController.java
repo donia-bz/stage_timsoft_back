@@ -38,6 +38,11 @@ public class ManifesteController {
         return ResponseEntity.ok(manifesteService.getManifestesByClient(clientId));
     }
 
+    @GetMapping("/client/{clientId}/brouillon")
+    public ResponseEntity<Manifeste> getBrouillonByClient(@PathVariable String clientId) {
+        return ResponseEntity.ok(manifesteService.getBrouillonByClient(clientId));
+    }
+
     @GetMapping
     public ResponseEntity<List<Manifeste>> getAll() {
         return ResponseEntity.ok(manifesteService.getAllManifestes());
@@ -56,6 +61,11 @@ public class ManifesteController {
             existing.setColisIds(request.getColisIds());
         }
         return ResponseEntity.ok(manifesteService.updateManifeste(id, existing));
+    }
+
+    @PatchMapping("/{id}/valider")
+    public ResponseEntity<Manifeste> valider(@PathVariable String id) {
+        return ResponseEntity.ok(manifesteService.validerManifeste(id));
     }
 
     @DeleteMapping("/{id}")

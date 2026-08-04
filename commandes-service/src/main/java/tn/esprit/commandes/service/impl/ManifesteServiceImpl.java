@@ -3,6 +3,7 @@ package tn.esprit.commandes.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.commandes.entity.Manifeste;
+import tn.esprit.commandes.entity.enums.StatutManifeste;
 import tn.esprit.commandes.exception.ResourceNotFoundException;
 import tn.esprit.commandes.repository.ManifesteRepository;
 import tn.esprit.commandes.service.ManifesteService;
@@ -32,6 +33,21 @@ public class ManifesteServiceImpl implements ManifesteService {
     }
 
     @Override
+    public Manifeste getBrouillonByClient(String clientId) {
+        return manifesteRepository.findByClientIdAndStatut(clientId, StatutManifeste.BROUILLON)
+                .orElseGet(() -> {
+                    // Créer un nouveau manifeste brouillon si aucun n'existe
+                    Manifeste newManifeste = Manifeste.builder()
+                            .clientId(clientId)
+                            .nombreColis(0)
+                            .statut(StatutManifeste.BROUILLON)
+                            .colisIds(new java.util.ArrayList<>())
+                            .build();
+                    return manifesteRepository.save(newManifeste);
+                });
+    }
+
+    @Override
     public List<Manifeste> getAllManifestes() {
         return manifesteRepository.findAll();
     }
@@ -52,6 +68,13 @@ public class ManifesteServiceImpl implements ManifesteService {
             existing.setColisIds(manifeste.getColisIds());
         }
         return manifesteRepository.save(existing);
+    }
+
+    @Override
+    public Manifeste validerManifeste(String id) {
+        Manifeste manifeste = getManifesteById(id);
+        manifeste.setStatut(StatutManifeste.IMPRIME);
+        return manifesteRepository.save(manifeste);
     }
 
     @Override

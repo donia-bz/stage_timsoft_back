@@ -8,7 +8,11 @@ import tn.esprit.commandes.entity.enums.StatutColis;
 import tn.esprit.commandes.entity.enums.StatutCommande;
 import tn.esprit.commandes.entity.enums.StatutEnlevement;
 import tn.esprit.commandes.entity.enums.StatutManifeste;
-import tn.esprit.commandes.repository.*;
+import tn.esprit.commandes.repository.CommandeRepository;
+import tn.esprit.commandes.repository.ColisRepository;
+import tn.esprit.commandes.repository.DestinataireRepository;
+import tn.esprit.commandes.repository.ManifesteRepository;
+import tn.esprit.commandes.repository.EnlevementRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommandesDataInitializer implements CommandLineRunner {
 
-    private final AdresseRepository adresseRepository;
+    // private final AdresseRepository adresseRepository; // Commenté car ce n'est pas dans ce service
     private final CommandeRepository commandeRepository;
     private final ColisRepository colisRepository;
     private final DestinataireRepository destinataireRepository;
@@ -36,91 +40,50 @@ public class CommandesDataInitializer implements CommandLineRunner {
         colisRepository.deleteAll();
         commandeRepository.deleteAll();
         destinataireRepository.deleteAll();
-        adresseRepository.deleteAll();
+        // adresseRepository.deleteAll(); // Commenté car ce n'est pas dans ce service
         System.out.println("✅ Base de données nettoyée");
 
         // Créer des adresses pour le client test
         String clientId = "client-test-id-temp"; // sera synchronisé avec l'ID du client
         
-        // Adresses du client
-        Adresse adresseClient1 = Adresse.builder()
-                .rue("123 Rue de la Liberté")
-                .ville("Tunis")
-                .codePostal("1001")
-                .latitude(36.8065)
-                .longitude(10.1815)
-                .build();
+        // Adresses du client (simulées avec IDs)
+        String adresseClient1Id = "addr-1";
+        String adresseClient2Id = "addr-2";
+        String adresseClient3Id = "addr-3";
+        String adresseClient4Id = "addr-4";
+        String adresseDepartId = "addr-depart";
         
-        Adresse adresseClient2 = Adresse.builder()
-                .rue("45 Avenue Habib Bourguiba")
-                .ville("Sfax")
-                .codePostal("3000")
-                .latitude(34.7406)
-                .longitude(10.7603)
-                .build();
-        
-        Adresse adresseClient3 = Adresse.builder()
-                .rue("78 Rue du Liban")
-                .ville("Sousse")
-                .codePostal("4000")
-                .latitude(35.8256)
-                .longitude(10.6084)
-                .build();
-        
-        Adresse adresseClient4 = Adresse.builder()
-                .rue("12 Avenue Farhat Hached")
-                .ville("Bizerte")
-                .codePostal("7000")
-                .latitude(37.2744)
-                .longitude(9.8739)
-                .build();
-        
-        // Adresse du dépôt de départ
-        Adresse adresseDepart = Adresse.builder()
-                .rue("Centre de Tri BFExpress")
-                .ville("Tunis")
-                .codePostal("1000")
-                .latitude(36.8000)
-                .longitude(10.2000)
-                .build();
-        
-        adresseClient1 = adresseRepository.save(adresseClient1);
-        adresseClient2 = adresseRepository.save(adresseClient2);
-        adresseClient3 = adresseRepository.save(adresseClient3);
-        adresseClient4 = adresseRepository.save(adresseClient4);
-        adresseDepart = adresseRepository.save(adresseDepart);
-        
-        System.out.println("✅ Adresses créées (5 adresses)");
+        System.out.println("✅ Adresses simulées (5 adresses)");
 
         // Créer des destinataires variés
         Destinataire dest1 = Destinataire.builder()
                 .nom("Ahmed Ben Ali")
                 .telephone("20123456")
-                .adresseId(adresseClient1.getId())
+                .adresseId(adresseClient1Id)
                 .build();
         
         Destinataire dest2 = Destinataire.builder()
                 .nom("Fatma Trabelsi")
                 .telephone("70987654")
-                .adresseId(adresseClient2.getId())
+                .adresseId(adresseClient2Id)
                 .build();
         
         Destinataire dest3 = Destinataire.builder()
                 .nom("Mohamed Karray")
                 .telephone("22345678")
-                .adresseId(adresseClient3.getId())
+                .adresseId(adresseClient3Id)
                 .build();
         
         Destinataire dest4 = Destinataire.builder()
                 .nom("Samia Jaziri")
                 .telephone("98765432")
-                .adresseId(adresseClient4.getId())
+                .adresseId(adresseClient4Id)
                 .build();
         
         Destinataire dest5 = Destinataire.builder()
                 .nom("Khaled Mejri")
                 .telephone("99887766")
-                .adresseId(adresseClient1.getId())
+                .adresseId(adresseClient1Id)
                 .build();
         
         dest1 = destinataireRepository.save(dest1);
@@ -135,8 +98,8 @@ public class CommandesDataInitializer implements CommandLineRunner {
         // Commande 1 : En attente - Commande récente
         Commande cmd1 = Commande.builder()
                 .clientId(clientId)
-                .adresseDepartId(adresseDepart.getId())
-                .adresseArriveeId(adresseClient1.getId())
+                .adresseDepartId(adresseDepartId)
+                .adresseArriveeId(adresseClient1Id)
                 .statut(StatutCommande.EN_ATTENTE)
                 .typeService("STANDARD")
                 .dateCreation(LocalDateTime.now().minusMinutes(30))
@@ -147,8 +110,8 @@ public class CommandesDataInitializer implements CommandLineRunner {
         // Commande 2 : En livraison - Commande active
         Commande cmd2 = Commande.builder()
                 .clientId(clientId)
-                .adresseDepartId(adresseDepart.getId())
-                .adresseArriveeId(adresseClient2.getId())
+                .adresseDepartId(adresseDepartId)
+                .adresseArriveeId(adresseClient2Id)
                 .statut(StatutCommande.EN_LIVRAISON)
                 .typeService("EXPRESS")
                 .dateCreation(LocalDateTime.now().minusHours(2))
@@ -159,8 +122,8 @@ public class CommandesDataInitializer implements CommandLineRunner {
         // Commande 3 : Livrée - Commande terminée
         Commande cmd3 = Commande.builder()
                 .clientId(clientId)
-                .adresseDepartId(adresseDepart.getId())
-                .adresseArriveeId(adresseClient3.getId())
+                .adresseDepartId(adresseDepartId)
+                .adresseArriveeId(adresseClient3Id)
                 .statut(StatutCommande.LIVREE)
                 .typeService("STANDARD")
                 .dateCreation(LocalDateTime.now().minusDays(1))
@@ -171,8 +134,8 @@ public class CommandesDataInitializer implements CommandLineRunner {
         // Commande 4 : Confirmée - Prête pour enlèvement
         Commande cmd4 = Commande.builder()
                 .clientId(clientId)
-                .adresseDepartId(adresseDepart.getId())
-                .adresseArriveeId(adresseClient4.getId())
+                .adresseDepartId(adresseDepartId)
+                .adresseArriveeId(adresseClient4Id)
                 .statut(StatutCommande.CONFIRMEE)
                 .typeService("STANDARD")
                 .dateCreation(LocalDateTime.now().minusHours(1))
@@ -183,8 +146,8 @@ public class CommandesDataInitializer implements CommandLineRunner {
         // Commande 5 : En attente - Commande récente
         Commande cmd5 = Commande.builder()
                 .clientId(clientId)
-                .adresseDepartId(adresseDepart.getId())
-                .adresseArriveeId(adresseClient2.getId())
+                .adresseDepartId(adresseDepartId)
+                .adresseArriveeId(adresseClient2Id)
                 .statut(StatutCommande.EN_ATTENTE)
                 .typeService("STANDARD")
                 .dateCreation(LocalDateTime.now().minusMinutes(15))
@@ -195,8 +158,8 @@ public class CommandesDataInitializer implements CommandLineRunner {
         // Commande 6 : Livrée - Ancienne commande
         Commande cmd6 = Commande.builder()
                 .clientId(clientId)
-                .adresseDepartId(adresseDepart.getId())
-                .adresseArriveeId(adresseClient1.getId())
+                .adresseDepartId(adresseDepartId)
+                .adresseArriveeId(adresseClient1Id)
                 .statut(StatutCommande.LIVREE)
                 .typeService("EXPRESS")
                 .dateCreation(LocalDateTime.now().minusDays(3))
@@ -361,7 +324,7 @@ public class CommandesDataInitializer implements CommandLineRunner {
                 .manifesteId(manifeste1.getId())
                 .dateDemandee(LocalDateTime.now().plusDays(1))
                 .statut(StatutEnlevement.EN_ATTENTE)
-                .adresseEnlevementId(adresseClient1.getId())
+                .adresseEnlevementId(adresseClient1Id)
                 .build();
         
         Enlevement enlevement2 = Enlevement.builder()
@@ -370,7 +333,7 @@ public class CommandesDataInitializer implements CommandLineRunner {
                 .dateDemandee(LocalDateTime.now().minusHours(2))
                 .dateReelle(LocalDateTime.now().minusHours(1))
                 .statut(StatutEnlevement.EFFECTUE)
-                .adresseEnlevementId(adresseClient2.getId())
+                .adresseEnlevementId(adresseClient2Id)
                 .build();
         
         enlevement1 = enlevementRepository.save(enlevement1);
@@ -380,7 +343,6 @@ public class CommandesDataInitializer implements CommandLineRunner {
 
         System.out.println("🎉 Initialisation des données de test terminée !");
         System.out.println("📊 Résumé des données créées pour le suivi de colis :");
-        System.out.println("   - 5 adresses");
         System.out.println("   - 5 destinataires");
         System.out.println("   - 6 commandes (EN_ATTENTE, EN_LIVRAISON, LIVREE, CONFIRMEE)");
         System.out.println("   - 10 colis (différents statuts pour le suivi)");

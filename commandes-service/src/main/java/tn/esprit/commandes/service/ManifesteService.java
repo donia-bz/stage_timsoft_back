@@ -12,9 +12,13 @@ public interface ManifesteService {
 
     List<Manifeste> getManifestesByClient(String clientId);
 
+    Manifeste getBrouillonByClient(String clientId);
+
     List<Manifeste> getAllManifestes();
 
     Manifeste updateManifeste(String id, Manifeste manifeste);
+
+    Manifeste validerManifeste(String id);
 
     void deleteManifeste(String id);
 }
