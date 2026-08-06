@@ -66,6 +66,21 @@ public class LivreurController {
         return ResponseEntity.ok(livreurService.getLivreursByDepot(depotId));
     }
 
+    @PatchMapping("/livreurs/{id}/gouvernorat")
+    public ResponseEntity<Livreur> assignerGouvernorat(@PathVariable String id, @RequestParam String gouvernorat) {
+        return ResponseEntity.ok(livreurService.assignerGouvernorat(id, gouvernorat));
+    }
+
+    @GetMapping("/livreurs/gouvernorat/{gouvernorat}")
+    public ResponseEntity<List<Livreur>> getLivreursByGouvernorat(@PathVariable String gouvernorat) {
+        return ResponseEntity.ok(livreurService.getLivreursByGouvernorat(gouvernorat));
+    }
+
+    @GetMapping("/livreurs/{id}/livraisons")
+    public ResponseEntity<List<?>> getLivraisonsByLivreur(@PathVariable String id) {
+        return ResponseEntity.ok(livreurService.getLivraisonsByLivreur(id));
+    }
+
     // --- AffectationVehicule endpoints ---
 
     @PostMapping("/livreurs/{livreurId}/vehicule")

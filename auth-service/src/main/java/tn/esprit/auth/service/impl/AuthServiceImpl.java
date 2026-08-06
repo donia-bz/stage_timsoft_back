@@ -45,6 +45,8 @@ public class AuthServiceImpl implements AuthService {
                         .telephone(request.getTelephone())
                         .role("CLIENT")
                         .dateCreation(LocalDateTime.now())
+                        .statut("INSCRIPTION")
+                        .approuve(false)
                         .entreprise(request.getEntreprise())
                         .matriculeFiscal(request.getMatriculeFiscal())
                         .build();
@@ -58,10 +60,13 @@ public class AuthServiceImpl implements AuthService {
                         .telephone(request.getTelephone())
                         .role("LIVREUR")
                         .dateCreation(LocalDateTime.now())
-                        .statut(StatutLivreur.DISPONIBLE)
+                        .statut("INSCRIPTION")
+                        .approuve(false)
                         .latitudeActuelle(0.0f)
                         .longitudeActuelle(0.0f)
                         .noteMoyenne(5.0f)
+                        .nombreLivraisons(0)
+                        .dateInscription(LocalDateTime.now())
                         .build();
                 break;
             case "ADMIN":
@@ -129,5 +134,27 @@ public class AuthServiceImpl implements AuthService {
         return utilisateurRepository.findAll().stream()
                 .filter(u -> u.getRole().equalsIgnoreCase(role))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Utilisateur approuverUtilisateur(String id) {
+        Utilisateur utilisateur = utilisateurRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'id : " + id));
+        utilisateur.setApprouve(true);
+        utilisateur.setStatut("ACTIF");
+        return utilisateurRepository.save(utilisateur);
+    }
+
+    @Override
+    public void supprimerUtilisateur(String id) {
+        utilisateurRepository.deleteById(id);
+    }
+
+    @Override
+    public Utilisateur changerStatut(String id, String statut) {
+        Utilisateur utilisateur = utilisateurRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'id : " + id));
+        utilisateur.setStatut(statut);
+        return utilisateurRepository.save(utilisateur);
     }
 }

@@ -11,4 +11,5 @@ import java.util.List;
 public interface LivreurRepository extends MongoRepository<Livreur, String> {
     List<Livreur> findByStatut(StatutLivreur statut);
     List<Livreur> findByDepotId(String depotId);
+    List<Livreur> findByGouvernorat(String gouvernorat);
 }

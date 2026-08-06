@@ -31,4 +31,11 @@ public class Utilisateur {
     @CreatedDate
     private LocalDateTime dateCreation;
     private String role; // CLIENT, LIVREUR, ADMIN
+    private String statut; // INSCRIPTION, ACTIF, SUSPENDU
+    private Boolean approuve; // Pour validation admin
+    private String gouvernorat; // Pour les livreurs
+    private String typePermis; // Pour les livreurs
+    private String depotId; // Pour les livreurs
+    private String vehiculeId; // Pour les livreurs
+    private String photoUrl; // Pour les livreurs
 }

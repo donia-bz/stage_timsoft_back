@@ -9,9 +9,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="livreurs-service" />
         <module name="auth-service" />
+        <module name="depots-service" />
         <module name="audit-service" />
         <module name="ia-service" />
+        <module name="stats-service" />
         <module name="commandes-service" />
+        <module name="vehicles-service" />
+        <module name="reclamations-service" />
         <module name="notifications-service" />
         <module name="tracking-service" />
       </profile>
@@ -22,11 +26,15 @@
       <module name="audit-service" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="commandes-service" options="-parameters" />
+      <module name="depots-service" options="-parameters" />
       <module name="ia-service" options="-parameters" />
       <module name="livreurs-service" options="-parameters" />
       <module name="notifications-service" options="-parameters" />
+      <module name="reclamations-service" options="-parameters" />
       <module name="stage-timsoft-livraison" options="" />
+      <module name="stats-service" options="-parameters" />
       <module name="tracking-service" options="-parameters" />
+      <module name="vehicles-service" options="-parameters" />
     </option>
   </component>
 </project>

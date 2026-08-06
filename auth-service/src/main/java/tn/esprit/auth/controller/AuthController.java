@@ -48,7 +48,21 @@ public class AuthController {
         return ResponseEntity.ok(authService.getUsersByRole(role));
     }
 
+    @PatchMapping("/users/{id}/approuver")
+    public ResponseEntity<Utilisateur> approuverUtilisateur(@PathVariable String id) {
+        return ResponseEntity.ok(authService.approuverUtilisateur(id));
+    }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> supprimerUtilisateur(@PathVariable String id) {
+        authService.supprimerUtilisateur(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/users/{id}/statut")
+    public ResponseEntity<Utilisateur> changerStatut(@PathVariable String id, @RequestParam String statut) {
+        return ResponseEntity.ok(authService.changerStatut(id, statut));
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {

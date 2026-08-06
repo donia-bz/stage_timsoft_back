@@ -141,6 +141,24 @@ public class LivreurServiceImpl implements LivreurService {
     }
 
     @Override
+    public Livreur assignerGouvernorat(String livreurId, String gouvernorat) {
+        Livreur livreur = getLivreurById(livreurId);
+        livreur.setGouvernorat(gouvernorat);
+        return livreurRepository.save(livreur);
+    }
+
+    @Override
+    public List<Livreur> getLivreursByGouvernorat(String gouvernorat) {
+        return livreurRepository.findByGouvernorat(gouvernorat);
+    }
+
+    @Override
+    public List<?> getLivraisonsByLivreur(String livreurId) {
+        // Pour l'in, retourne une liste vide - sera implémenté avec le tracking-service
+        return List.of();
+    }
+
+    @Override
     public Depot saveDepot(Depot depot) {
         return depotRepository.save(depot);
     }

@@ -13,4 +13,7 @@ public interface AuthService {
     Utilisateur getProfile(String id);
     List<Utilisateur> getAllUsers();
     List<Utilisateur> getUsersByRole(String role);
+    Utilisateur approuverUtilisateur(String id);
+    void supprimerUtilisateur(String id);
+    Utilisateur changerStatut(String id, String statut);
 }

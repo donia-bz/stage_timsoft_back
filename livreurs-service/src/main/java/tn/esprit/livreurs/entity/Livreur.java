@@ -20,9 +20,16 @@ public class Livreur {
     private String id;
     private String nom;
     private String prenom;
+    private String email;
+    private String telephone;
     private StatutLivreur statut;
     private Double latitudeActuelle;
     private Double longitudeActuelle;
     private Double noteMoyenne;
     private String depotId;
+    private String vehiculeId;
+    private String gouvernorat;
+    private String typePermis;
+    private String photoUrl;
+    private Integer nombreLivraisons;
 }

@@ -30,6 +30,10 @@
         <module>ia-service</module>
         <module>notifications-service</module>
         <module>audit-service</module>
+        <module>vehicles-service</module>
+        <module>depots-service</module>
+        <module>reclamations-service</module>
+        <module>stats-service</module>
     </modules>
 
     <dependencyManagement>

@@ -28,6 +28,10 @@ public interface LivreurService {
     Livreur assignerDepot(String livreurId, String depotId);
     List<Livreur> getLivreursByDepot(String depotId);
 
+    Livreur assignerGouvernorat(String livreurId, String gouvernorat);
+    List<Livreur> getLivreursByGouvernorat(String gouvernorat);
+    List<?> getLivraisonsByLivreur(String livreurId);
+
     Depot saveDepot(Depot depot);
     Depot getDepotById(String id);
     List<Depot> getAllDepots();

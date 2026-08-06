@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import tn.esprit.auth.entity.Admin;
 import tn.esprit.auth.entity.Client;
 import tn.esprit.auth.entity.Livreur;
-import tn.esprit.auth.entity.enums.StatutLivreur;
 import tn.esprit.auth.repository.UtilisateurRepository;
 
 import java.time.LocalDateTime;
@@ -67,10 +66,12 @@ public class DataInitializer implements CommandLineRunner {
                 .telephone("71345678")
                 .role("LIVREUR")
                 .dateCreation(LocalDateTime.now())
-                .statut(StatutLivreur.DISPONIBLE)
+                .statutLivreur("DISPONIBLE")
                 .latitudeActuelle(36.8065f)
                 .longitudeActuelle(10.1815f)
                 .noteMoyenne(5.0f)
+                .nombreLivraisons(0)
+                .dateInscription(LocalDateTime.now())
                 .build();
         
         Livreur savedLivreur = utilisateurRepository.save(livreur);
