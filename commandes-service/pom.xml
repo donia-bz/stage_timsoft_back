@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>commandes-service</artifactId>
+    <packaging>jar</packaging>
     <name>commandes-service</name>
     <description>Microservice de gestion des commandes et colis - Plateforme de livraison</description>
 
@@ -37,12 +38,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>tn.esprit</groupId>
-            <artifactId>auth-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
