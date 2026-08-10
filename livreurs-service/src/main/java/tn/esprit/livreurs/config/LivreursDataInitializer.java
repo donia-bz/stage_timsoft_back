@@ -52,15 +52,12 @@ public class LivreursDataInitializer implements CommandLineRunner {
                 .nom("Ben")
                 .prenom("Ahmed")
                 .email("ahmed.ben@bfexpress.com")
-                .motDePasseHash("$2a$10$encodedpassword1")
                 .telephone("20123456")
-                .role("LIVREUR")
-                .dateCreation(LocalDateTime.now())
                 .statut(StatutLivreur.DISPONIBLE)
-                .latitudeActuelle(36.8065f)
-                .longitudeActuelle(10.1815f)
+                .latitudeActuelle(36.8065)
+                .longitudeActuelle(10.1815)
                 .depotId(depot1.getId())
-                .noteMoyenne(4.8f)
+                .noteMoyenne(4.8)
                 .build();
 
         // Livreur 2 : En course
@@ -68,15 +65,13 @@ public class LivreursDataInitializer implements CommandLineRunner {
                 .nom("Trabelsi")
                 .prenom("Fatma")
                 .email("fatma.trabelsi@bfexpress.com")
-                .motDePasseHash("$2a$10$encodedpassword2")
                 .telephone("70987654")
-                .role("LIVREUR")
-                .dateCreation(LocalDateTime.now().minusDays(30))
                 .statut(StatutLivreur.EN_COURSE)
-                .latitudeActuelle(36.8200f)
-                .longitudeActuelle(10.1900f)
+                .latitudeActuelle(36.8200)
+                .longitudeActuelle(10.1900)
                 .depotId(depot1.getId())
-                .noteMoyenne(4.9f)
+                .noteMoyenne(4.9)
+                .nombreLivraisons(150)
                 .build();
 
         // Livreur 3 : Hors ligne
@@ -84,15 +79,12 @@ public class LivreursDataInitializer implements CommandLineRunner {
                 .nom("Karray")
                 .prenom("Mohamed")
                 .email("mohamed.karray@bfexpress.com")
-                .motDePasseHash("$2a$10$encodedpassword3")
                 .telephone("22345678")
-                .role("LIVREUR")
-                .dateCreation(LocalDateTime.now().minusDays(60))
                 .statut(StatutLivreur.HORS_LIGNE)
-                .latitudeActuelle(36.8000f)
-                .longitudeActuelle(10.2000f)
+                .latitudeActuelle(36.8000)
+                .longitudeActuelle(10.2000)
                 .depotId(depot2.getId())
-                .noteMoyenne(4.5f)
+                .noteMoyenne(4.5)
                 .build();
 
         livreur1 = livreurRepository.save(livreur1);

@@ -13,14 +13,16 @@ public class CommandeRequest {
     @NotBlank(message = "L'identifiant client est obligatoire")
     private String clientId;
 
-    @NotBlank(message = "L'adresse de depart est obligatoire")
+    // Adresses optionnelles pour simplifier la création de commandes
     private String adresseDepartId;
-
-    @NotBlank(message = "L'adresse d'arrivee est obligatoire")
     private String adresseArriveeId;
 
     @NotNull(message = "Le type de service est obligatoire")
     private String typeService;
+
+    private Double montantTotal;
+    private String nomDestinataire;
+    private String telephoneDestinataire;
 
     @Valid
     private List<ColisRequest> colis;

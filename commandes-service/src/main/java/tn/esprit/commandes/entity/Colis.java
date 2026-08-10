@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import tn.esprit.commandes.entity.enums.StatutColis;
+import tn.esprit.commandes.entity.enums.StatutCommande;
 
 @Data
 @Builder
@@ -25,5 +25,5 @@ public class Colis {
     private Double poids;
     private String dimensions;
     private Boolean fragile;
-    private StatutColis statut;
+    private StatutCommande statut; // Aligné avec StatutCommande pour un tracking unifié
 }

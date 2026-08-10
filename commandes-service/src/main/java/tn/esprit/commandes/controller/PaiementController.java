@@ -46,4 +46,12 @@ public class PaiementController {
             @RequestParam StatutPaiement statut) {
         return ResponseEntity.ok(paiementService.updateStatutPaiement(id, statut));
     }
+
+    @GetMapping("/client/{clientId}/reglements")
+    public ResponseEntity<List<PaiementResponse>> getReglementsByClient(
+            @PathVariable String clientId,
+            @RequestParam(required = false) Integer mois,
+            @RequestParam(required = false) Integer annee) {
+        return ResponseEntity.ok(paiementService.getReglementsByClient(clientId, mois, annee));
+    }
 }

@@ -22,8 +22,8 @@ public class Commande {
     private String id;
     private String clientId;
 
-    private String adresseDepartId;
-    private String adresseArriveeId;
+    private String adresseDepartId; // Optionnel pour simplifier la création
+    private String adresseArriveeId; // Optionnel pour simplifier la création
 
     private StatutCommande statut;
     private String typeService;
@@ -36,4 +36,7 @@ public class Commande {
 
     private String predictionDelaiId;
     private String affectationIAId;
+    
+    private String nomDestinataire;
+    private String telephoneDestinataire;
 }

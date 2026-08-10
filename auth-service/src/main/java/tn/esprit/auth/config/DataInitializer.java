@@ -20,12 +20,13 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Nettoyer toutes les données existantes
-        System.out.println("🧹 Nettoyage complet de la base de données...");
-        utilisateurRepository.deleteAll();
-        System.out.println("✅ Base de données nettoyée");
+        // Nettoyer toutes les données existantes (désactivé pour conserver les données)
+        // System.out.println("🧹 Nettoyage complet de la base de données...");
+        // utilisateurRepository.deleteAll();
+        // System.out.println("✅ Base de données nettoyée");
 
-        // Créer un compte admin par défaut
+        if (utilisateurRepository.count() == 0) {
+            // Créer un compte admin par défaut
         Admin admin = Admin.builder()
                 .nom("Admin")
                 .prenom("BFExpress")
@@ -52,7 +53,7 @@ public class DataInitializer implements CommandLineRunner {
                 .entreprise("BFExpress SARL")
                 .matriculeFiscal("1234567/A/M/000")
                 .build();
-        
+
         Client savedClient = utilisateurRepository.save(client);
         System.out.println("✅ Compte client créé : client@bfexpress.com / client123");
         System.out.println("   ID Client : " + savedClient.getId());
@@ -78,7 +79,10 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("✅ Compte livreur créé : livreur@bfexpress.com / livreur123");
         System.out.println("   ID Livreur : " + savedLivreur.getId());
 
-        System.out.println("🎉 Initialisation des données de test terminée !");
+            System.out.println("🎉 Initialisation des données de test terminée !");
+        } else {
+            System.out.println("✅ Les utilisateurs existent déjà, aucune donnée de test créée.");
+        }
         System.out.println("📋 Identifiants de connexion :");
         System.out.println("   ADMIN : admin@bfexpress.com / admin123");
         System.out.println("   CLIENT : client@bfexpress.com / client123");

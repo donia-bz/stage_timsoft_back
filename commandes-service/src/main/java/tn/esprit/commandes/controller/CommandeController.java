@@ -40,6 +40,11 @@ public class CommandeController {
         return ResponseEntity.ok(commandeService.getCommandesByClient(clientId));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<CommandeResponse>> search(@RequestParam String q) {
+        return ResponseEntity.ok(commandeService.searchCommandes(q));
+    }
+
     @PatchMapping("/{id}/statut")
     public ResponseEntity<CommandeResponse> updateStatut(
             @PathVariable String id,

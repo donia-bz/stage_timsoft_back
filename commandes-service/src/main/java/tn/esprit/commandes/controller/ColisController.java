@@ -2,11 +2,9 @@ package tn.esprit.commandes.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.commandes.dto.response.ColisResponse;
+import tn.esprit.commandes.entity.enums.StatutCommande;
 import tn.esprit.commandes.service.ColisService;
 
 import java.util.List;
@@ -31,5 +29,17 @@ public class ColisController {
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<ColisResponse>> getByClient(@PathVariable String clientId) {
         return ResponseEntity.ok(colisService.getColisByClient(clientId));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ColisResponse>> search(@RequestParam String q) {
+        return ResponseEntity.ok(colisService.searchColis(q));
+    }
+
+    @PatchMapping("/{id}/statut")
+    public ResponseEntity<ColisResponse> updateStatut(
+            @PathVariable String id,
+            @RequestParam StatutCommande statut) {
+        return ResponseEntity.ok(colisService.updateStatut(id, statut));
     }
 }

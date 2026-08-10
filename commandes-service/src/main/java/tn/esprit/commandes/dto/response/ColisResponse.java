@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tn.esprit.commandes.entity.enums.StatutColis;
+import tn.esprit.commandes.entity.enums.StatutCommande;
 
 @Data
 @Builder
@@ -19,5 +19,5 @@ public class ColisResponse {
     private Double poids;
     private String dimensions;
     private Boolean fragile;
-    private StatutColis statut;
+    private StatutCommande statut;
 }

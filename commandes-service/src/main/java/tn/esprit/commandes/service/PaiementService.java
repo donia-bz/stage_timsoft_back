@@ -13,4 +13,5 @@ public interface PaiementService {
     PaiementResponse getPaiementByCommandeId(String commandeId);
     PaiementResponse updateStatutPaiement(String id, StatutPaiement statut);
     List<PaiementResponse> getAllPaiements();
+    List<PaiementResponse> getReglementsByClient(String clientId, Integer mois, Integer annee);
 }

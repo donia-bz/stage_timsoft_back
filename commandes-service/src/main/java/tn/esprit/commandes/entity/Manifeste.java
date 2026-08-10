@@ -27,5 +27,6 @@ public class Manifeste {
     private LocalDateTime dateCreation;
     private Integer nombreColis;
     private StatutManifeste statut;
-    private List<String> colisIds;
+    private List<String> colisIds; // IDs des colis liés au manifeste
+    private List<String> commandeIds; // IDs des commandes (pour faciliter la création)
 }

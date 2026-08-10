@@ -24,6 +24,7 @@ public class ManifesteController {
                 .nombreColis(request.getNombreColis())
                 .statut(StatutManifeste.BROUILLON)
                 .colisIds(request.getColisIds())
+                .commandeIds(request.getCommandeIds())
                 .build();
         return ResponseEntity.ok(manifesteService.createManifeste(manifeste));
     }
@@ -59,6 +60,9 @@ public class ManifesteController {
         }
         if (request.getColisIds() != null) {
             existing.setColisIds(request.getColisIds());
+        }
+        if (request.getCommandeIds() != null) {
+            existing.setCommandeIds(request.getCommandeIds());
         }
         return ResponseEntity.ok(manifesteService.updateManifeste(id, existing));
     }

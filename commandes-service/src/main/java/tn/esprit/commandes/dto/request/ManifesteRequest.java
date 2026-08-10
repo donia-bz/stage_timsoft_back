@@ -16,4 +16,5 @@ public class ManifesteRequest {
     private Integer nombreColis;
 
     private List<String> colisIds;
+    private List<String> commandeIds;
 }

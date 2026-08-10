@@ -24,5 +24,7 @@ public class CommandeResponse {
     private LocalDateTime dateCreation;
     private Integer delaiEstimeMin;
     private Double montantTotal;
+    private String nomDestinataire;
+    private String telephoneDestinataire;
     private List<ColisResponse> colis;
 }

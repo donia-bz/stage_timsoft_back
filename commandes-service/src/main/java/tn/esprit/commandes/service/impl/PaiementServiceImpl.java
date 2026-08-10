@@ -38,7 +38,7 @@ public class PaiementServiceImpl implements PaiementService {
         Paiement sauvegarde = paiementRepository.save(paiement);
 
         commande.setMontantTotal(request.getMontant());
-        commande.setStatut(StatutCommande.CONFIRMEE);
+        commande.setStatut(StatutCommande.MANIFESTE);
         commandeRepository.save(commande);
 
         return toResponse(sauvegarde);
@@ -74,13 +74,36 @@ public class PaiementServiceImpl implements PaiementService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<PaiementResponse> getReglementsByClient(String clientId, Integer mois, Integer annee) {
+        List<Paiement> paiements;
+        if (mois != null && annee != null) {
+            // Filtrer par mois et année
+            paiements = paiementRepository.findByClientIdAndDateCreationBetween(
+                    clientId,
+                    annee + "-" + String.format("%02d", mois) + "-01",
+                    annee + "-" + String.format("%02d", mois) + "-31"
+            );
+        } else {
+            // Retourner tous les paiements du client
+            paiements = paiementRepository.findByClientId(clientId);
+        }
+        return paiements.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
     private PaiementResponse toResponse(Paiement p) {
         return PaiementResponse.builder()
                 .id(p.getId())
                 .commandeId(p.getCommandeId())
+                .clientId(p.getClientId())
                 .montant(p.getMontant())
+                .frais(p.getFrais())
+                .net(p.getNet())
                 .methode(p.getMethode())
                 .statut(p.getStatut())
+                .dateCreation(p.getDateCreation())
                 .build();
     }
 }

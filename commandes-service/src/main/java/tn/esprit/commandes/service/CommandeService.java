@@ -19,4 +19,6 @@ public interface CommandeService {
     CommandeResponse updateStatut(String id, StatutCommande nouveauStatut);
 
     void supprimerCommande(String id);
+
+    List<CommandeResponse> searchCommandes(String query);
 }
