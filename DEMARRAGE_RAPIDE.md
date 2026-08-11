@@ -8,11 +8,8 @@ L'erreur "Une erreur est survenue lors de l'inscription" est causée par le fait
 
 ## 🔧 Solution Immédiate
 
-### 1. Démarrer MongoDB (vérifier qu'il tourne)
-```bash
-# Vérifier si MongoDB est actif
-netstat -an | findstr 27017
-```
+### 1. Vérifier MongoDB Atlas (cloud)
+MongoDB Atlas est configuré et fonctionne en cloud - pas besoin de démarrer MongoDB localement.
 
 ### 2. Démarrer le service auth-service
 ```bash
@@ -90,12 +87,10 @@ Vous devriez voir les utilisateurs de test :
    - Regardez dans le terminal où vous avez lancé `mvn spring-boot:run`
    - Cherchez les erreurs
 
-3. **Vérifier MongoDB** :
-   ```bash
-   mongo
-   use bfexpress
-   show collections
-   ```
+3. **Vérifier MongoDB Atlas** :
+   - Connectez-vous à https://cloud.mongodb.com
+   - Vérifiez que le cluster `timsoftstage` est actif
+   - Vous pouvez utiliser MongoDB Compass pour visualiser les données
 
 4. **Redémarrer le service** :
    ```bash
@@ -164,12 +159,11 @@ netstat -an | findstr 808
 ### Arrêter un service
 Dans le terminal du service : `Ctrl+C`
 
-### Vider la base MongoDB
-```bash
-mongo
-use bfexpress
-db.dropDatabase()
-```
+### Vider la base MongoDB Atlas
+1. Connectez-vous à https://cloud.mongodb.com
+2. Allez dans votre cluster `timsoftstage`
+3. Cliquez sur "Collections"
+4. Sélectionnez toutes les collections et supprimez-les
 
 ---
 
@@ -178,15 +172,15 @@ db.dropDatabase()
 Si après avoir démarré auth-service l'inscription échoue toujours :
 
 1. Vérifiez les logs du service pour les erreurs
-2. Vérifiez que MongoDB est accessible
+2. Vérifiez que MongoDB Atlas est accessible (cluster timsoftstage actif)
 3. Vérifiez qu'il n'y a pas de conflit de ports
-4. Essayez de recréer la base MongoDB
+4. Vérifiez la chaîne de connexion MongoDB Atlas
 
 ---
 
 ## ✅ Checklist Avant de Tester
 
-- [ ] MongoDB est démarré et accessible
+- [ ] MongoDB Atlas est accessible (cluster timsoftstage actif)
 - [ ] auth-service est démarré (port 8082)
 - [ ] Frontend est démarré (port 4200)
 - [ ] Testé `curl http://localhost:8082/api/auth/users`

@@ -2,13 +2,14 @@
 
 ## 📋 Configuration Actuelle
 
-Tous les services utilisent maintenant une **base MongoDB unique** : `bfexpress`
+Tous les services utilisent maintenant **MongoDB Atlas** (base de données cloud) : `bfexpress`
 
-### 🔌 Connexion MongoDB
-- **Hôte** : `localhost:27017`
+### 🔌 Connexion MongoDB Atlas
+- **Cluster** : `timsoftstage.192tpcj.mongodb.net`
 - **Base de données** : `bfexpress`
-- **Authentification** : Aucune (désactivée)
+- **Authentification** : Activée (username: donia)
 - **Auto-création d'index** : Activée
+- **Type** : M0 Sandbox (Gratuit)
 
 ---
 
@@ -30,31 +31,18 @@ Tous les services utilisent maintenant une **base MongoDB unique** : `bfexpress`
 
 ---
 
-## 🔧 Vérification MongoDB
+## 🔧 Vérification MongoDB Atlas
 
-### 1. Vérifier que MongoDB est démarré
-```bash
-# Vérifier le service MongoDB
-mongod --version
+### 1. Vérifier la connexion via MongoDB Compass
+1. Ouvrez MongoDB Compass
+2. Collez la chaîne de connexion : `mongodb+srv://donia:jCn8Pt1ZhyF5ewRy@timsoftstage.192tpcj.mongodb.net/bfexpress?retryWrites=true&w=majority`
+3. Cliquez sur "Connect"
+4. Vous devriez voir la base de données `bfexpress`
 
-# OU vérifier si MongoDB tourne
-netstat -an | findstr 27017
-```
-
-### 2. Se connecter à MongoDB
-```bash
-mongo
-# OU
-mongosh
-```
-
-### 3. Vérifier la base de données
-```javascript
-// Dans le shell MongoDB
-show dbs  // Devrait montrer 'bfexpress'
-use bfexpress
-show collections  // Liste des collections
-```
+### 2. Vérifier via MongoDB Atlas Dashboard
+1. Connectez-vous à https://cloud.mongodb.com
+2. Allez dans votre cluster `timsoftstage`
+3. Cliquez sur "Collections" pour voir les collections créées
 
 ---
 
@@ -86,12 +74,12 @@ Les collections sont créées automatiquement par Spring Data MongoDB :
 ## 🧪 Test de Connexion
 
 ### Test avec Spring Boot
-1. Démarrer MongoDB
-2. Démarrer un service (ex: auth-service)
-3. Vérifier les logs :
+1. Démarrer un service (ex: auth-service)
+2. Vérifier les logs :
 ```
-Connected to MongoDB server at localhost:27017
+Connected to MongoDB Atlas
 Database: bfexpress
+Cluster: timsoftstage
 ```
 
 ### Test avec curl
