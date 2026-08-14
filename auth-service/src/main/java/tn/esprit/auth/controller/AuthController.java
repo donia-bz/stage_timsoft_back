@@ -69,6 +69,18 @@ public class AuthController {
         return ResponseEntity.ok(authService.changerStatut(id, statut));
     }
 
+    @PatchMapping("/users/bulk-approuver")
+    public ResponseEntity<List<Utilisateur>> bulkApprouverUtilisateurs(@RequestBody List<String> ids) {
+        return ResponseEntity.ok(authService.bulkApprouverUtilisateurs(ids));
+    }
+
+    @PatchMapping("/users/bulk-statut")
+    public ResponseEntity<List<Utilisateur>> bulkChangerStatut(@RequestBody Map<String, Object> payload) {
+        List<String> ids = (List<String>) payload.get("ids");
+        String statut = (String) payload.get("statut");
+        return ResponseEntity.ok(authService.bulkChangerStatut(ids, statut));
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", ex.getMessage()));

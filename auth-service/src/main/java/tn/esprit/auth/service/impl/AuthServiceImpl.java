@@ -157,4 +157,23 @@ public class AuthServiceImpl implements AuthService {
         utilisateur.setStatut(statut);
         return utilisateurRepository.save(utilisateur);
     }
+
+    @Override
+    public List<Utilisateur> bulkApprouverUtilisateurs(List<String> ids) {
+        List<Utilisateur> utilisateurs = utilisateurRepository.findAllById(ids);
+        for (Utilisateur u : utilisateurs) {
+            u.setApprouve(true);
+            u.setStatut("ACTIF");
+        }
+        return utilisateurRepository.saveAll(utilisateurs);
+    }
+
+    @Override
+    public List<Utilisateur> bulkChangerStatut(List<String> ids, String statut) {
+        List<Utilisateur> utilisateurs = utilisateurRepository.findAllById(ids);
+        for (Utilisateur u : utilisateurs) {
+            u.setStatut(statut);
+        }
+        return utilisateurRepository.saveAll(utilisateurs);
+    }
 }

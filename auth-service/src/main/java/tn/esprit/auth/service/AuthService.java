@@ -14,6 +14,8 @@ public interface AuthService {
     List<Utilisateur> getAllUsers();
     List<Utilisateur> getUsersByRole(String role);
     Utilisateur approuverUtilisateur(String id);
+    List<Utilisateur> bulkApprouverUtilisateurs(List<String> ids);
     void supprimerUtilisateur(String id);
     Utilisateur changerStatut(String id, String statut);
+    List<Utilisateur> bulkChangerStatut(List<String> ids, String statut);
 }
