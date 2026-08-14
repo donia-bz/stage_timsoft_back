@@ -11,4 +11,5 @@ public interface IAService {
     AffectationIA calculerAffectation(String commandeId, Double latDepart, Double longDepart, List<LivreurDTO> livreurs);
     List<PredictionDelai> getPredictionsByCommande(String commandeId);
     List<AffectationIA> getAffectationsByCommande(String commandeId);
+    tn.esprit.ia.dto.DispatchResponse dispatchGlobal(tn.esprit.ia.dto.DispatchRequest request);
 }

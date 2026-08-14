@@ -40,6 +40,12 @@ public class IAController {
         return ResponseEntity.status(HttpStatus.CREATED).body(affectation);
     }
 
+    @PostMapping("/dispatch-global")
+    public ResponseEntity<tn.esprit.ia.dto.DispatchResponse> dispatchGlobal(@RequestBody tn.esprit.ia.dto.DispatchRequest request) {
+        tn.esprit.ia.dto.DispatchResponse response = iaService.dispatchGlobal(request);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/predictions/commande/{commandeId}")
     public ResponseEntity<List<PredictionDelai>> getPredictionsByCommande(@PathVariable String commandeId) {
         return ResponseEntity.ok(iaService.getPredictionsByCommande(commandeId));

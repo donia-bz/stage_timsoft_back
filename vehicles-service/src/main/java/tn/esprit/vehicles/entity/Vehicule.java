@@ -22,9 +22,12 @@ public class Vehicule {
     private String immatriculation;
     private String modele;
     private String marque;
-    private String type; // Voiture, Moto, Camionnette
+    private String type; // Voiture, Moto, Camionnette, UTILITAIRE, CAMION
     private Integer capacite;
-    private String statut; // DISPONIBLE, EN_MAINTENANCE, HORS_SERVICE
+    private Double capaciteKg;
+    private Double capaciteVolume;
+    private Integer annee;
+    private String statut; // DISPONIBLE, EN_MAINTENANCE, HORS_SERVICE, MAINTENANCE, EN_SERVICE, EN_COURSE
     private String photoUrl;
     private String livreurId; // Affectation à un livreur
 

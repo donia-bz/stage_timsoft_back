@@ -17,6 +17,12 @@ import tn.esprit.commandes.repository.CommandeRepository;
 import tn.esprit.commandes.service.CommandeService;
 import tn.esprit.commandes.service.StatutTransitionService;
 
+import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +34,10 @@ public class CommandeServiceImpl implements CommandeService {
     private final CommandeRepository commandeRepository;
     private final ColisRepository colisRepository;
     private final AuditClient auditClient;
+    private final RestTemplate restTemplate;
+
+    @Value("${depots.service.url:http://localhost:8087/api/depots}")
+    private String depotsServiceUrl;
 
     @Override
     public CommandeResponse creerCommande(CommandeRequest request) {
@@ -123,13 +133,36 @@ public class CommandeServiceImpl implements CommandeService {
     }
 
     private Colis toColis(ColisRequest cr, String commandeId) {
+        String assignedDepotId = determineDepotIntelligemment();
         return Colis.builder()
                 .commandeId(commandeId)
                 .poids(cr.getPoids())
                 .dimensions(cr.getDimensions())
                 .fragile(cr.getFragile() != null && cr.getFragile())
                 .statut(StatutCommande.EN_ATTENTE)
+                .depotId(assignedDepotId)
                 .build();
+    }
+
+    private String determineDepotIntelligemment() {
+        try {
+            // Appel au microservice depots-service pour récupérer les dépôts (Simulation IA d'affectation)
+            ResponseEntity<List<Object>> response = restTemplate.exchange(
+                    depotsServiceUrl,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Object>>() {}
+            );
+            
+            if (response.getBody() != null && !response.getBody().isEmpty()) {
+                // Logique "IA" : Pour l'instant, on prend le premier dépôt disponible (ou on pourrait filtrer par gouvernorat)
+                java.util.Map<String, Object> depot = (java.util.Map<String, Object>) response.getBody().get(0);
+                return (String) depot.get("id");
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'affectation IA du dépôt: " + e.getMessage());
+        }
+        return "DEPOT_DEFAULT";
     }
 
     private ColisResponse toColisResponse(Colis c) {

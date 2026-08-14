@@ -16,7 +16,14 @@ public class Vehicule {
 
     @Id
     private String id;
-    private String type;
+    private String type; // CAMIONNETTE, UTILITAIRE, CAMION
     private String immatriculation;
-    private Double capaciteChargeKg;
+    private String modele;
+    private String marque;
+    private Integer annee;
+    private Double capaciteKg;
+    private Double capaciteVolume;
+    private String statut; // DISPONIBLE, EN_SERVICE, EN_COURSE, MAINTENANCE, HORS_SERVICE
+    private String livreurId;
+    private String depotId;
 }
