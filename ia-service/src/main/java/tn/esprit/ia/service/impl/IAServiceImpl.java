@@ -29,8 +29,11 @@ public class IAServiceImpl implements IAService {
     private final AffectationIARepository affectationIARepository;
     private final RestTemplate restTemplate;
 
-    @Value("${ia.python.url:http://localhost:5000/api/ia}")
+    @Value("${ia.python.url:http://localhost:5000}")
     private String pythonUrl;
+    
+    @Value("${ia.use.ml:false}")
+    private boolean useML;
 
     @Override
     public PredictionDelai predirDelai(String commandeId, Double latDepart, Double longDepart, Double latArrivee, Double longArrivee, String typeService) {
@@ -119,6 +122,52 @@ public class IAServiceImpl implements IAService {
         if (commandes == null || commandes.isEmpty() || livreurs == null || livreurs.isEmpty()) {
             return new DispatchResponse(new HashMap<>(), 0);
         }
+
+        // Utiliser le service Python ML si activé
+        if (useML) {
+            return dispatchGlobalWithML(request);
+        }
+        
+        // Sinon, utiliser K-Means classique
+        return dispatchGlobalWithKMeans(request);
+    }
+    
+    private DispatchResponse dispatchGlobalWithML(DispatchRequest request) {
+        try {
+            // Appeler le service Python ML
+            Map<String, Object> mlRequest = new HashMap<>();
+            mlRequest.put("commandes", request.getCommandes());
+            mlRequest.put("livreurs", request.getLivreurs());
+            
+            @SuppressWarnings("unchecked")
+            Map<String, Object> mlResponse = restTemplate.postForObject(
+                pythonUrl + "/dispatch-global",
+                mlRequest,
+                Map.class
+            );
+            
+            if (mlResponse != null && "success".equals(mlResponse.get("status"))) {
+                @SuppressWarnings("unchecked")
+                Map<String, List<String>> affectations = (Map<String, List<String>>) mlResponse.get("affectations");
+                int totalAffectations = ((Number) mlResponse.getOrDefault("total_affectations", 0)).intValue();
+                
+                // Sauvegarder les affectations dans la base de données
+                saveAffectationsToDB(affectations);
+                
+                return new DispatchResponse(affectations, totalAffectations);
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'appel au service ML: " + e.getMessage());
+            // Fallback vers K-Means en cas d'erreur
+            System.out.println("Fallback vers K-Means classique");
+        }
+        
+        return dispatchGlobalWithKMeans(request);
+    }
+    
+    private DispatchResponse dispatchGlobalWithKMeans(DispatchRequest request) {
+        List<CommandeDTO> commandes = request.getCommandes();
+        List<LivreurDTO> livreurs = request.getLivreurs();
 
         Map<String, List<String>> affectationsGlobales = new HashMap<>();
         int commandesAffectees = 0;
@@ -234,5 +283,22 @@ public class IAServiceImpl implements IAService {
         }
         
         return new DispatchResponse(affectationsGlobales, commandesAffectees);
+    }
+    
+    private void saveAffectationsToDB(Map<String, List<String>> affectations) {
+        for (Map.Entry<String, List<String>> entry : affectations.entrySet()) {
+            String livreurId = entry.getKey();
+            List<String> commandeIds = entry.getValue();
+            
+            for (String commandeId : commandeIds) {
+                AffectationIA aff = AffectationIA.builder()
+                        .commandeId(commandeId)
+                        .livreurId(livreurId)
+                        .score(1.0) // Score ML par défaut
+                        .dateCalcul(LocalDateTime.now())
+                        .build();
+                affectationIARepository.save(aff);
+            }
+        }
     }
 }
