@@ -16,4 +16,5 @@ public class LivreurDTO {
     private Double latitudeActuelle;
     private Double longitudeActuelle;
     private Double noteMoyenne;
+    private String gouvernorat;
 }

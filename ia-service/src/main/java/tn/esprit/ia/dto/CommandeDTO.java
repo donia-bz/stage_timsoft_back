@@ -15,4 +15,5 @@ public class CommandeDTO {
     private Double longitude;
     private Double poidsKg;
     private String ville;
+    private String gouvernorat;
 }
