@@ -25,6 +25,8 @@ public class Reclamation {
     private String description;
     private String statut; // EN_ATTENTE, EN_COURS, RESOLUE, REJETEE
     private String adminCommentaire;
+    private String reponseAdmin; // Réponse visible par le client
+    private LocalDateTime dateReponse; // Date de la réponse admin
 
     @CreatedDate
     private LocalDateTime dateCreation;

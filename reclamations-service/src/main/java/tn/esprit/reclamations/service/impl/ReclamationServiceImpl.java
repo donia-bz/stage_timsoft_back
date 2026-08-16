@@ -6,6 +6,7 @@ import tn.esprit.reclamations.entity.Reclamation;
 import tn.esprit.reclamations.exception.ResourceNotFoundException;
 import tn.esprit.reclamations.repository.ReclamationRepository;
 import tn.esprit.reclamations.service.ReclamationService;
+import tn.esprit.reclamations.websocket.ReclamationWebSocketHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,11 +16,14 @@ import java.util.List;
 public class ReclamationServiceImpl implements ReclamationService {
 
     private final ReclamationRepository reclamationRepository;
+    private final ReclamationWebSocketHandler webSocketHandler;
 
     @Override
     public Reclamation createReclamation(Reclamation reclamation) {
         reclamation.setStatut("EN_ATTENTE");
-        return reclamationRepository.save(reclamation);
+        Reclamation saved = reclamationRepository.save(reclamation);
+        System.out.println("✅ Réclamation créée: " + saved.getId() + " pour client: " + saved.getClientId());
+        return saved;
     }
 
     @Override
@@ -39,7 +43,22 @@ public class ReclamationServiceImpl implements ReclamationService {
         existingReclamation.setDescription(reclamation.getDescription());
         existingReclamation.setType(reclamation.getType());
         existingReclamation.setAdminCommentaire(reclamation.getAdminCommentaire());
-        return reclamationRepository.save(existingReclamation);
+
+        // Gérer la réponse admin visible par le client
+        if (reclamation.getReponseAdmin() != null && !reclamation.getReponseAdmin().isEmpty()) {
+            existingReclamation.setReponseAdmin(reclamation.getReponseAdmin());
+            existingReclamation.setDateReponse(LocalDateTime.now());
+            existingReclamation.setStatut("EN_COURS");
+            System.out.println("💬 Réponse admin ajoutée pour réclamation " + id);
+
+            // Notifier le client en temps réel via WebSocket
+            webSocketHandler.notifyClient(existingReclamation.getClientId(),
+                "{\"type\":\"NEW_RESPONSE\",\"reclamationId\":\"" + id + "\",\"reponse\":\"" + reclamation.getReponseAdmin() + "\"}");
+        }
+
+        Reclamation saved = reclamationRepository.save(existingReclamation);
+        System.out.println("✅ Réclamation mise à jour: " + id);
+        return saved;
     }
 
     @Override
@@ -55,12 +74,21 @@ public class ReclamationServiceImpl implements ReclamationService {
         if ("RESOLUE".equals(statut)) {
             reclamation.setDateResolution(LocalDateTime.now());
         }
-        return reclamationRepository.save(reclamation);
+        Reclamation saved = reclamationRepository.save(reclamation);
+        System.out.println("✅ Statut mis à jour: " + id + " -> " + statut);
+
+        // Notifier le client du changement de statut
+        webSocketHandler.notifyClient(reclamation.getClientId(),
+            "{\"type\":\"STATUS_UPDATE\",\"reclamationId\":\"" + id + "\",\"statut\":\"" + statut + "\"}");
+
+        return saved;
     }
 
     @Override
     public List<Reclamation> getReclamationsByClient(String clientId) {
-        return reclamationRepository.findByClientId(clientId);
+        List<Reclamation> reclamations = reclamationRepository.findByClientId(clientId);
+        System.out.println("📝 Réclamations récupérées pour client " + clientId + ": " + reclamations.size());
+        return reclamations;
     }
 
     @Override

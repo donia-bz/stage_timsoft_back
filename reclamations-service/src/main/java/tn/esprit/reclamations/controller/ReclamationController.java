@@ -50,7 +50,12 @@ public class ReclamationController {
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<Reclamation>> getReclamationsByClient(@PathVariable String clientId) {
-        return ResponseEntity.ok(reclamationService.getReclamationsByClient(clientId));
+        List<Reclamation> reclamations = reclamationService.getReclamationsByClient(clientId);
+        System.out.println("📝 Réclamations pour client " + clientId + ": " + reclamations.size());
+        for (Reclamation rec : reclamations) {
+            System.out.println("📝 Réclamation " + rec.getId() + " - Réponse admin: " + rec.getReponseAdmin());
+        }
+        return ResponseEntity.ok(reclamations);
     }
 
     @GetMapping("/statut/{statut}")
