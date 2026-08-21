@@ -1,0 +1,92 @@
+services:
+  auth-service:
+    image: bfexpress-auth
+    ports:
+      - "8082:8082"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+
+  commandes-service:
+    image: bfexpress-commandes
+    ports:
+      - "8081:8081"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      AUDIT_SERVICE_URL: http://audit-service:8091
+
+  livreurs-service:
+    image: bfexpress-livreurs
+    ports:
+      - "8084:8084"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      AUDIT_SERVICE_URL: http://audit-service:8091
+
+  depots-service:
+    image: bfexpress-depots
+    ports:
+      - "8087:8087"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+
+  tracking-service:
+    image: bfexpress-tracking
+    ports:
+      - "8083:8083"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+
+  vehicles-service:
+    image: bfexpress-vehicles
+    ports:
+      - "8086:8086"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+
+  reclamations-service:
+    image: bfexpress-reclamations
+    ports:
+      - "8088:8088"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+
+  audit-service:
+    image: bfexpress-audit
+    ports:
+      - "8091:8091"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+
+  notifications-service:
+    image: bfexpress-notifications
+    ports:
+      - "8092:8092"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+
+  stats-service:
+    image: bfexpress-stats
+    ports:
+      - "8089:8089"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+
+  ia-python:
+    image: bfexpress-ia-python
+    ports:
+      - "5000:5000"
+
+  ia-service:
+    image: bfexpress-ia-java
+    ports:
+      - "8085:8085"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      IA_PYTHON_URL: http://ia-python:5000
+    depends_on:
+      - ia-python
+
+  frontend:
+    image: bfexpress-frontend
+    ports:
+      - "4200:80"

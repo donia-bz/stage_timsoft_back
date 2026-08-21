@@ -35,7 +35,7 @@ Tous les services utilisent maintenant **MongoDB Atlas** (base de données cloud
 
 ### 1. Vérifier la connexion via MongoDB Compass
 1. Ouvrez MongoDB Compass
-2. Collez la chaîne de connexion : `mongodb+srv://donia:jCn8Pt1ZhyF5ewRy@timsoftstage.192tpcj.mongodb.net/bfexpress?retryWrites=true&w=majority`
+2. Collez la chaîne de connexion : `mongodb+srv://<username>:<password>@<cluster>/<database>`
 3. Cliquez sur "Connect"
 4. Vous devriez voir la base de données `bfexpress`
 
